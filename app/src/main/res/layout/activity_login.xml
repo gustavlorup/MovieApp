@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@color/colorPrimary"
+    android:background="@drawable/our_app_background"
     tools:context="tig167.movieapp.LoginActivity"
     android:weightSum="1">
 
@@ -21,12 +21,6 @@
         android:layout_height="98dp"
         app:srcCompat="@drawable/user_icon"
         android:id="@+id/imageView3" />
-
-    <ProgressBar
-        style="?android:attr/progressBarStyleSmall"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/login_progress"/>
 
 
     <LinearLayout
@@ -51,8 +45,9 @@
             android:layout_height="wrap_content"
             android:hint="@string/prompt_email"
             android:inputType="textEmailAddress"
+            android:textColorHint="#000000"
 
-            android:background="@drawable/custom_border_around_textview"
+            android:background="@drawable/loginactivity_border"
             android:padding="10dp"
             />
 
@@ -68,9 +63,9 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:background="@drawable/custom_border_around_textview"
+                    android:background="@drawable/loginactivity_border"
                     android:padding="10dp"
-
+                    android:textColorHint="#000000"
                     android:singleLine="true"
             android:layout_marginTop="10dp" />
 
@@ -84,7 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textView"
-            android:textColor="@color/colorPrimaryDark"/>
+            android:textColor="#ffffff"/>
 
         <Button
                 android:id="@+id/email_sign_in_button"
@@ -92,8 +87,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/action_sign_in"
-
-                android:background="@drawable/custom_sign_in_button"
+                android:textColor="#000000"
+                android:background="@drawable/loginactivity_signintutton"
 
                 android:textStyle="bold"
             android:layout_marginTop="50dp" />

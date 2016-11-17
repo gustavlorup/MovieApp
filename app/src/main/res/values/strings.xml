@@ -3,7 +3,7 @@
 
     <!-- Strings relaterade till login -->
     <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
+    <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="sign_in_google">Or sign in with</string>
@@ -14,7 +14,8 @@
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
     <string name="sign_in_title">GiMovie</string>
-
+    <string name="title_activity_start_up">StartUpActivity</string>
+    <string name="register_button">SIGN IN</string>
 
 
 </resources>
