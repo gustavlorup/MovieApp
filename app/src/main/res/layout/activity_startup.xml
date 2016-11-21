@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
@@ -17,25 +18,38 @@
         android:id="@+id/imageView4" />
 
     <Button
+        android:onClick="promptSignUp"
         android:layout_marginTop="100dp"
         android:background="@drawable/startupactivity_transparentbutton"
-        android:text="Button"
+        android:text="@string/signup_button"
+        android:textAllCaps="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/registerButton" />
 
     <Button
-        android:text="Button"
-        android:background="@drawable/loginactivity_signintutton"
+        android:text="@string/sign_in_with_google"
+        android:textAllCaps="false"
+        android:background="@drawable/startupactivity_transparentbutton"
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/googleButton" />
 
-    <Button
-        android:text="Button"
+    <TextView
+        android:text="@string/already_user"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        android:background="@drawable/loginactivity_signintutton"
+        android:id="@+id/textView2" />
+
+    <Button
+        android:onClick="promptLogIn"
+        android:text="@string/login_button"
+        android:textAllCaps="false"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/startupactivity_transparentbutton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/signInButton" />

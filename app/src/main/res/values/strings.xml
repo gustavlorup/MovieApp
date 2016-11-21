@@ -16,6 +16,14 @@
     <string name="sign_in_title">GiMovie</string>
     <string name="title_activity_start_up">StartUpActivity</string>
     <string name="register_button">SIGN IN</string>
-
+    <string name="sign_in_with_google">Google</string>
+    <string name="login_button">Log in</string>
+    <string name="signup_button">Sign up</string>
+    <string name="already_user">Already a user?</string>
+    <string name="terms_policy">Accept </string>
+    <string name="terms"> terms and conditions</string>
+    <string name="register_txt">Register</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
 
 </resources>

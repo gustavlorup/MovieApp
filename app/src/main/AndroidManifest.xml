@@ -14,30 +14,30 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!-- Aktivitet för start sida -->
+        <activity
+            android:name=".StartUpActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <!-- Aktivitet för login sida -->
         <activity
-            android:name=".StartUpActivity"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <!-- Aktivitet för start sida
-        <activity
-            android:name=".StartUpActivity"
+            android:name=".LoginActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        -->
 
 
-        <!-- Aktivitet för register sida
+
+        <!-- Aktivitet för register sida -->
         <activity
             android:name=".RegisterActivity"
             android:label="@string/app_name">
@@ -46,7 +46,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        -->
+
     </application>
 
 </manifest>
