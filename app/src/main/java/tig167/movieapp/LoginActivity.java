@@ -11,7 +11,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
     // Lägger till kommentar
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

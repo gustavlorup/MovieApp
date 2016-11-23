@@ -2,9 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:background="@drawable/our_app_background"
+    android:background="@drawable/newbgbgbg"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:id="@+id/registeractivity"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:layout_height="match_parent">
@@ -13,43 +14,46 @@
         android:layout_gravity="center"
         android:layout_width="189dp"
         android:layout_height="140dp"
-        app:srcCompat="@drawable/register_user_icon"
+        app:srcCompat="@drawable/regicon"
         android:id="@+id/imageView" />
 
     <EditText
         android:layout_width="match_parent"
         android:gravity="center"
-        android:onClick="clearTextView"
+        android:maxLines="1"
+
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:layout_marginTop="50dp"
-        android:textColorHint="@color/white"
+        android:textColorHint="#ffffff"
         android:hint="@string/first_name"
         android:padding="10dp"
-        android:background="@drawable/loginactivity_border"
+        android:background="@drawable/whiteborder"
         android:ems="10"
         android:id="@+id/editText" />
 
     <EditText
         android:padding="10dp"
-        android:onClick="true"
+        android:maxLines="1"
         android:gravity="center"
-        android:textColorHint="@color/white"
+        android:textColorHint="#ffffff"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:background="@drawable/loginactivity_border"
+        android:background="@drawable/whiteborder"
         android:hint="@string/last_name"
         android:ems="10"
         android:id="@+id/editText2" />
 
     <AutoCompleteTextView
         android:padding="10dp"
+        android:inputType="text"
         android:gravity="center"
         android:layout_marginTop="50dp"
-        android:background="@drawable/loginactivity_border"
-        android:textColorHint="@color/white"
+
+        android:background="@drawable/whiteborder"
+        android:textColorHint="#ffffff"
         android:hint="@string/prompt_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -61,11 +65,12 @@
 
         <EditText
             android:layout_width="160dp"
+            android:maxLines="1"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:padding="10dp"
             android:gravity="center"
-            android:background="@drawable/loginactivity_border"
+            android:background="@drawable/whiteborder"
             android:hint="Password"
             android:textColorHint="#ffffff"
             android:inputType="textPassword"
@@ -77,10 +82,11 @@
         <EditText
             android:layout_width="160dp"
             android:gravity="center"
+            android:maxLines="1"
             android:padding="10dp"
             android:layout_marginTop="10dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/loginactivity_border"
+            android:background="@drawable/whiteborder"
             android:inputType="textPassword"
             android:ems="10"
             android:textColorHint="#ffffff"
@@ -104,6 +110,7 @@
             <CheckBox
                 android:text="@string/terms_policy"
                 android:layout_width="wrap_content"
+                android:textColor="#ffffff"
                 android:layout_height="wrap_content"
                 android:id="@+id/checkBox"
                 android:layout_centerVertical="true"
@@ -117,7 +124,11 @@
             android:text="@string/terms"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/textView3"
+            android:id="@+id/termsView"
+                android:clickable="true"
+                android:onClick="showTerms"
+
+
 
             />
 
@@ -127,18 +138,19 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_marginBottom="10dp"
         android:layout_height="match_parent">
 
         <Button
             android:text="@string/register_txt"
             android:textColor="@color/colorPrimaryDark"
-            android:layout_marginTop="10dp"
             android:layout_centerInParent="true"
-            android:background="@drawable/custom_button"
+            android:background="@drawable/yellowcustombutton"
             android:layout_width="200dp"
             android:gravity="center"
             android:layout_height="wrap_content"
-            android:id="@+id/button5" />
+            android:onClick="sayThankYou"
+            android:id="@+id/registerButton1" />
     </RelativeLayout>
 
 </LinearLayout>
