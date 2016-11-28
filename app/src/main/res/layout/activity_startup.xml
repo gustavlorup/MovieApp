@@ -8,14 +8,14 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:background="@drawable/newbgbg"
+    android:background="@mipmap/newbgbg"
 
     android:paddingTop="@dimen/activity_vertical_margin">
 
     <ImageView
         android:layout_width="235dp"
         android:layout_height="139dp"
-        app:srcCompat="@drawable/user_icon"
+        app:srcCompat="@drawable/starticon"
         android:id="@+id/imageView4" />
 
     <Button

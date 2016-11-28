@@ -45,6 +45,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+
+
     /*
 
         Metod för att visa villkor för vår app.
