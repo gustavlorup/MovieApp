@@ -57,7 +57,7 @@
         android:hint="@string/prompt_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/autoCompleteTextView" />
+        android:id="@+id/mEmailView" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -75,7 +75,7 @@
             android:textColorHint="#ffffff"
             android:inputType="textPassword"
             android:ems="10"
-            android:id="@+id/editText6"
+            android:id="@+id/mPasswordView"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
@@ -90,7 +90,7 @@
             android:inputType="textPassword"
             android:ems="10"
             android:textColorHint="#ffffff"
-            android:id="@+id/editText4"
+            android:id="@+id/mSecondPasswordView"
             android:hint="@string/prompt_password"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
@@ -103,7 +103,7 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
 
-            android:layout_below="@+id/editText6"
+            android:layout_below="@+id/mPasswordView"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true">
 
@@ -112,7 +112,7 @@
                 android:layout_width="wrap_content"
                 android:textColor="#ffffff"
                 android:layout_height="wrap_content"
-                android:id="@+id/checkBox"
+                android:id="@+id/termsBox"
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
@@ -149,8 +149,7 @@
             android:layout_width="200dp"
             android:gravity="center"
             android:layout_height="wrap_content"
-            android:onClick="sayThankYou"
-            android:id="@+id/registerButton1" />
+            android:id="@+id/registerButton" />
     </RelativeLayout>
 
 </LinearLayout>

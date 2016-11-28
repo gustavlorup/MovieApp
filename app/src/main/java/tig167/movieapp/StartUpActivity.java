@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
  */
 
 
-public class StartUpActivity extends AppCompatActivity implements View.OnClickListener {
+public class StartUpActivity extends AppCompatActivity implements View.OnClickListener{
 
 
 
@@ -40,10 +40,14 @@ public class StartUpActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     @Override
-    public void onClick(View view) {
-        int i = view.getId();
-        if(i == R.id.registerButton){
+    public void onClick(View v) {
+        int i = v.getId();
+        if(i == R.id.openLogInActivity){
+            promptLogIn(v);
+        }
 
+        if(i == R.id.openRegisterActivity){
+            promptSignUp(v);
         }
     }
 }
