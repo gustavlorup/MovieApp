@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
  */
 
 
-public class StartUpActivity extends AppCompatActivity {
+public class StartUpActivity extends AppCompatActivity implements View.OnClickListener {
 
 
 
@@ -37,5 +37,13 @@ public class StartUpActivity extends AppCompatActivity {
     public void promptSignUp(View v){
         Intent registerActivity = new Intent(this, RegisterActivity.class);
         startActivity(registerActivity);
+    }
+
+    @Override
+    public void onClick(View view) {
+        int i = view.getId();
+        if(i == R.id.registerButton){
+
+        }
     }
 }
