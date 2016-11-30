@@ -1,5 +1,6 @@
 package tig167.movieapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -18,24 +20,42 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 /**
- * A login screen that offers login via email/password.
+ *
+ LoginAktivitet som använder sig utav FireBase för att autensiera en redan registrerad anmäld.
+ Ska öppna MenuActivity vid lyckad autensiering
+ *
  */
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+
+public class LoginActivity extends AppCompatActivity  {
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private AutoCompleteTextView mEmailField;
-    private EditText mPasswordField;
     private String TAG ="";
 
-    // Lägger till kommentar
+    EditText mEmailField;
+    EditText mPasswordField;
+
+    Button SignInButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
+        /* Hämtar signal från Firebase */
         mAuth = FirebaseAuth.getInstance();
 
+        mEmailField = (EditText) findViewById(R.id.mEmail);
+        mPasswordField = (EditText)findViewById(R.id.mPassword);
+        SignInButton = (Button) findViewById(R.id.signInButton);
+        SignInButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
+            }
+        });
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -52,39 +72,48 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    /* För at logga in på appen (öppna MenuActivity) */
+
     private void signIn(String email, String password) {
         Log.d(TAG, "signIn:" + email);
-        if (!validateForm()) {
+        if (!validateForm()) { /* Om fälten inte är ifyllde korrekt enlight validateForm() */
             return;
         }
 
+        /* Här görs inloggning med eget email och lösenord */
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
 
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
+                        /* Om inloggning fallerar */
+
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithEmail:failed", task.getException());
-                            Toast.makeText(LoginActivity.this, R.string.auth_failed,
+                            Toast.makeText(LoginActivity.this, R.string.login_auth_failed,
                                     Toast.LENGTH_SHORT).show();
                         }
 
-                        // ...
+                        /* Här ska vi lägga in vad som händer när man loggas in (öppna MenuActivity */
+
+                        if(task.isSuccessful()){
+                            openApp();
+                        }
+
+
                     }
                 });
     }
 
+    /* Kollar om fälten är korrekt ifyllda */
 
     private boolean validateForm() {
         boolean valid = true;
 
         String email = mEmailField.getText().toString();
         if (TextUtils.isEmpty(email)) {
-            mEmailField.setError("Required.");
+            mEmailField.setError("Required."); /* Ska bytas till en given String i String.xml */
             valid = false;
         } else {
             mEmailField.setError(null);
@@ -92,7 +121,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         String password = mPasswordField.getText().toString();
         if (TextUtils.isEmpty(password)) {
-            mPasswordField.setError("Required.");
+            mPasswordField.setError("Required."); /* Ska bytas till en given String i String.xml */
             valid = false;
         } else {
             mPasswordField.setError(null);
@@ -117,13 +146,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-
-    @Override
-    public void onClick(View v) {
-        int i = v.getId();
-        if(i == R.id.signInButton){
-            signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
-        }
-
+    public void openApp(){
+        Intent intent = new Intent(this, MenuActivity.class);
+        startActivity(intent);
+        finish();
     }
+
 }

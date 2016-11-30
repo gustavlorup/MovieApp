@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -15,39 +16,28 @@ import com.google.firebase.auth.FirebaseAuth;
  */
 
 
-public class StartUpActivity extends AppCompatActivity implements View.OnClickListener{
+public class StartUpActivity extends AppCompatActivity{
 
 
-
-    // Lägger till kommentar!
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_startup);
 
     }
+        /* Metoder som i xml-filens OnClick ska öppna (1) LoginActivity och (se nedan) */
 
-    // On Click för "Log in" knapp i StartUP
-    public void promptLogIn(View v){
-        Intent loginActivity = new Intent(this, LoginActivity.class);
-        startActivity(loginActivity);
-    }
-
-    // On click för "Register" knapp i StartUP
-    public void promptSignUp(View v){
-        Intent registerActivity = new Intent(this, RegisterActivity.class);
-        startActivity(registerActivity);
-    }
-
-    @Override
-    public void onClick(View v) {
-        int i = v.getId();
-        if(i == R.id.openLogInActivity){
-            promptLogIn(v);
+        public void promptSignIn(View v){
+            Intent loginActivity = new Intent(this, LoginActivity.class);
+            startActivity(loginActivity);
         }
 
-        if(i == R.id.openRegisterActivity){
-            promptSignUp(v);
+        /* (2) RegisterActivity */
+
+        public void promptSignUp(View v){
+            Intent registerActivity = new Intent(this, RegisterActivity.class);
+            startActivity(registerActivity);
         }
     }
-}
+
+

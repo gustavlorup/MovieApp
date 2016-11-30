@@ -13,4 +13,16 @@
     tools:context="tig167.movieapp.MenuActivity"
     tools:showIn="@layout/app_bar_menu">
 
+    <Button
+        android:text="Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="119dp"
+        android:layout_marginStart="119dp"
+        android:layout_marginTop="92dp"
+        android:onClick="doThis"
+        android:id="@+id/trybutton" />
 </RelativeLayout>

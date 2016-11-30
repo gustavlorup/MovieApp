@@ -25,8 +25,9 @@
         android:textAllCaps="false"
         android:textColor="@color/colorPrimaryDark"
         android:layout_width="200dp"
+        android:onClick="promptSignUp"
         android:layout_height="wrap_content"
-        android:id="@+id/openRegisterActivity" />
+        android:id="@+id/openRegisterButton" />
 
     <Button
         android:text="@string/sign_in_with_google"
@@ -53,8 +54,9 @@
         android:layout_marginTop="5dp"
         android:background="@drawable/yellowcustombutton"
         android:layout_width="200dp"
+        android:onClick="promptSignIn"
         android:layout_height="wrap_content"
-        android:id="@+id/openLogInActivity" />
+        android:id="@+id/openLogInButton" />
 
 
 </LinearLayout>

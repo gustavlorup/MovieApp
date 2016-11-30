@@ -45,7 +45,8 @@ import org.w3c.dom.Text;
  * Created by jnssonhugo on 2016-11-17.
  */
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
+public class RegisterActivity extends AppCompatActivity{
+
 
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
@@ -60,13 +61,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        //Vyer
-        mEmailField = (AutoCompleteTextView) findViewById(R.id.mEmailView);
-        mPasswordField = (EditText) findViewById(R.id.mPasswordView);
-        mSecondPasswordField = (EditText) findViewById(R.id.mSecondPasswordView);
 
-        //Registerknapp
-        findViewById(R.id.registerButton).setOnClickListener(this);
+        //Vyer
+        mEmailField = (AutoCompleteTextView) findViewById(R.id.mEmailField);
+        mPasswordField = (EditText) findViewById(R.id.mPasswordField);
+        mSecondPasswordField = (EditText) findViewById(R.id.mSecondPasswordField);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -87,23 +86,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
-    }
 
     private void createAccount(String email, String password) {
         Log.d(TAG, "createAccount:" + email);
-        if (!validateForm()) {
+        if (!validateForm()) { /* Om fälten inte är ifyllde korrekt enlight validateForm() */
             return;
         }
 
@@ -113,35 +99,33 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
 
-                        //Om sign in misslyckas så får användaren veta detta.
+                        /* Om inloggning fallerar */
 
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-                            Toast.makeText(RegisterActivity.this, R.string.auth_failed,
+                            Toast.makeText(RegisterActivity.this, R.string.register_auth_failed,
                                     Toast.LENGTH_SHORT).show();
                         }
 
-                        //Om sign in lyckas, säg tack för registration och visa inloggninsruta
+                        /* Här ska vi lägga in vad som händer när man loggas in (öppna MenuActivity */
 
                         if(task.isSuccessful()){
                             sayThankYou();
+                            openApp();
                         }
-                        // [START_EXCLUDE]
-                        //hideProgressDialog();
-                        // [END_EXCLUDE]
+
                     }
                 });
-        // [END create_user_with_email]
+        /* #END createAccount() */
     }
+
+    /* Kollar om fälten är korrekt ifyllda */
 
     private boolean validateForm() {
         boolean valid = true;
 
         String email = mEmailField.getText().toString();
         if (TextUtils.isEmpty(email)) {
-            mEmailField.setError("Required.");
+            mEmailField.setError("Required."); /* Ska bytas till en given String i String.xml */
             valid = false;
         } else {
             mEmailField.setError(null);
@@ -149,7 +133,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         String firstPassword = mPasswordField.getText().toString();
         if (TextUtils.isEmpty(firstPassword)) {
-            mPasswordField.setError("Required.");
+            mPasswordField.setError("Required."); /* Ska bytas till en given String i String.xml */
             valid = false;
         } else {
             mPasswordField.setError(null);
@@ -157,8 +141,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         String secondpassword = mSecondPasswordField.getText().toString();
         if (!secondpassword.equals(firstPassword)) {
-            mPasswordField.setError("Passwords doesnt match");
-            mSecondPasswordField.setError("Passwords doesnt match");
+            mPasswordField.setError("Passwords doesnt match"); /* Ska bytas till en given String i String.xml */
+            mSecondPasswordField.setError("Passwords doesnt match"); /* Ska bytas till en given String i String.xml */
             valid = false;
         } else {
             mPasswordField.setError(null);
@@ -168,27 +152,23 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         CheckBox checkbox = (CheckBox) findViewById(R.id.termsBox);
         if(!checkbox.isChecked()){
-            checkbox.setError("Required");
+            checkbox.setError("Required"); /* Ska bytas till en given String i String.xml */
             valid = false;
         }
         else{
             checkbox.setError(null);
         }
 
-        return valid;
+        return valid; /* Testet godkänns */
     }
 
 
 
-
-
-
-
-
     /*
-        Metod för att visa villkor för vår app.
+     * Funktion för att öppna ett pop-up fönster i form av en AlertDialog som ska informera användaren om diverse villkor som gäller
+     * för våran app
+     */
 
-    */
 
     public void showTerms(View view) {
         final Dialog dialog = new Dialog(this);
@@ -208,10 +188,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
-    /*
-            Metod för att säga tack för registrering av användare. Kommer att öppna log-in ruta.
+    /* Likt showTerms() visar ett pop-up fönster som informerar användaren om att man blivit registrerad och att man nu blir inloggad */
 
-     */
     public void sayThankYou() {
         final Dialog dialog = new Dialog(this);
         TextView title = new TextView(this);
@@ -225,198 +203,39 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialog.dismiss();
-                promptLogin();
                 finish();
             }
         }).create().show();
     }
 
-
-    /*
-
-                Öppnar log in ruta
-
-     */
-    public void promptLogin() {
-        Intent intent = new Intent(this, LoginActivity.class);
+    /* Funktion för att öppna MenuActivity */
+    public void openApp(){
+        Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
+        finish();
     }
 
+    /* onStart och onStop funktioner för att starta och stoppa interaktionen med Firease */
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
 
     @Override
-    public void onClick(View v) {
-        int i = v.getId();
-        if (i == R.id.registerButton) {
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
+    /* Funktion som i knappens OnClick (xml) används för att skapa användaren */
+
+    public void promptRegister(View v) {
             createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString());
-
         }
     }
-}
-
-       /* testText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog();
-
-            }
-
-        });
-
-
-
-    /*
-
-    public void showTerms(View view) {
-        TextView title = new TextView(this);
-        Button button = new Button(this);
-        button.setGravity(Gravity.CENTER);
-        title.setText("Terms and conditions");
-        title.setAllCaps(true);
-        title.setTextSize(20);
-        title.setGravity(Gravity.CENTER);
-        final Dialog dialog = new Dialog(this);
-        AlertDialog.Builder b1 = new AlertDialog.Builder(this);
-                b1.setCustomTitle(title);
-                b1.setMessage("teshhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhheshhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhheshhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhheshhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhheshhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhheshhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhheshhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhheshhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhheshhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhheshhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhheshhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhheshhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhheshhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhheshhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhheshhhhhhhhhhhhhhhhhhhhhhheshhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhheshhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhheshhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhheshhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhht");
-                b1.setNeutralButton("Done", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialog.dismiss();
-                    }
-                }).create().show();
-
-
-    }
-
-    */
-
-
-
-
-    /*
-
-        public void showTerms(View v) {
-
-            FrameLayout rootLayout = (FrameLayout) findViewById(android.R.id.content);
-            View.inflate(this, R.layout.test, rootLayout);
-
-                regButton.setVisibility(View.GONE);
-        }
-
-        public void dismissTerms(View v){
-            FrameLayout rootLayout = (FrameLayout) findViewById(android.R.id.content);
-            View.inflate(this, R.layout.activity_register, rootLayout);
-
-
-        }
-
-        */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /* Fungerar för att få upp pop-up
-
-
-
-        final Button registerButton = (Button) findViewById(R.id.button5);
-        final ColorDrawable dwDim = new ColorDrawable(800000000);
-        final ColorDrawable dwNorm = new ColorDrawable(800000000);
-        dwDim.setAlpha(50);
-        dwNorm.setAlpha(255);
-
-        linearLayout = (LinearLayout) findViewById(R.id.registeractivity);
-        test = (TextView) findViewById(R.id.termsView);
-
-        Button confirmButton = (Button) findViewById(R.id.confirmButton);
-
-        layoutInFlater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-        ViewGroup container = (ViewGroup) layoutInFlater.inflate(R.layout.test, null);
-        popupWindow = new PopupWindow(container, 1000, 1500, true);
-        popupWindow.setBackgroundDrawable(null);
-
-
-        test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                registerButton.setVisibility(View.GONE);
-                linearLayout.setBackgroundDrawable(dwDim);
-                popupWindow.showAtLocation(linearLayout, Gravity.CENTER, 0, 0);
-
-
-            }
-
-        });
-
-        */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //private String m_Text ="By accepting the terms... hhhhhhhhhhhhhhhhhh" +
-      //      "gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg" +
-        //    "";
-
-    /*
-
-            Metod för att visa villkor i en skrollbar pop-up ruta
-
-
-        public void showTerms(View view){
-            // Skapar Textview utifrån ID:termsView i customDialog.xml
-            final TextView termsOnClick = (TextView) findViewById(R.id.termsView);
-
-            termsOnClick.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    setContentView(R.layout.customdialog);
-
-
-
-                }
-
-
-            }); */
-
-
-
-
-
-
-
-
-
 
 
 

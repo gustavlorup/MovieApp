@@ -26,7 +26,8 @@
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
     <string name="confirm_terms">Confirm</string>
-    <string name="auth_failed">Authentication faied</string>
+    <string name="login_auth_failed">The password or username was inserted incorrectly</string>
+    <string name="register_auth_failed">Registration incomplete.</string>
 
 
     <string name="termsText">By downloading any application from MovieApp or Google™ (here after referered to as “The Company”), installing or using this application or any portion thereof (“Application”), you agree to the following terms and conditions (the “Terms and Conditions”).\n" +
