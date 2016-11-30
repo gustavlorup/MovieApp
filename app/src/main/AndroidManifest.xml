@@ -36,12 +36,17 @@
             android:name=".RegisterActivity"
             android:label="@string/app_name" />
 
-        <!-- Popupwindow -->
 
         <activity
             android:name=".MenuActivity"
-            android:label="@string/title_activity_menu"
-            android:theme="@style/AppTheme"></activity>
+            android:label="MovieApp">
+        <intent-filter>
+                <action android:name="android.intent.action"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+
     </application>
 
 </manifest>
