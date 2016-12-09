@@ -24,6 +24,8 @@
     <string name="terms"> terms and conditions</string>
     <string name="register_txt">Register</string>
     <string name="first_name">First name</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
     <string name="last_name">Last name</string>
     <string name="confirm_terms">Confirm</string>
     <string name="login_auth_failed">The password or username was inserted incorrectly</string>

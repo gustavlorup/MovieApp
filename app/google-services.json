@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "717072936327-4f521qij6h55ci5g5tk9p1vaeedm1p5o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "tig167.movieapp",
+            "certificate_hash": "B2FD82529A603B03D21889077171E2580667D705"
+          }
+        },
+        {
           "client_id": "717072936327-940uru3dfafckrofnf9f6kggfuq2khii.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

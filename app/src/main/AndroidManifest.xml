@@ -6,6 +6,9 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -25,7 +28,6 @@
             </intent-filter>
         </activity>
 
-
         <!-- Aktivitet för login sida -->
         <activity
             android:name=".LoginActivity"
@@ -39,11 +41,7 @@
 
         <!-- Popupwindow -->
 
-        <activity
-            android:name=".MenuActivity"
-            android:exported="true"
-            android:label="MovieApp">
-    </activity>
+        <activity android:name=".MainActivity"></activity>
     </application>
 
 </manifest>
