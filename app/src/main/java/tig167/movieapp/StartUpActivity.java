@@ -1,5 +1,7 @@
 package tig167.movieapp;
 
+import android.database.Cursor;
+import android.database.SQLException;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.io.IOException;
 
 /**
  * Created by jnssonhugo on 2016-11-17.
@@ -24,7 +28,35 @@ public class StartUpActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_startup);
 
+        DBHelper myDbHelper;
+        myDbHelper = new DBHelper(this);
+
+        try {
+
+            myDbHelper.createDataBase();
+
+        } catch (IOException ioe) {
+
+            throw new Error("Unable to create database");
+
+        }
+
+        try {
+
+            myDbHelper.openDataBase();
+
+        }catch(SQLException sqle){
+
+            throw sqle;
+
+        }
+
+        myDbHelper.getRandomMovie();
+
+
+
     }
+
         /* Metoder som i xml-filens OnClick ska öppna (1) LoginActivity och (se nedan) */
 
         public void promptSignIn(View v){
@@ -38,6 +70,7 @@ public class StartUpActivity extends AppCompatActivity{
             Intent registerActivity = new Intent(this, RegisterActivity.class);
             startActivity(registerActivity);
         }
+
     }
 
 
