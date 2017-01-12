@@ -47,22 +47,32 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     public static String desc;
     public static String url;
 
+    YouTubePlayer player;
+
     private static final int RECOVERY_REQUEST = 1;
 
+    TextView titleView;
+    TextView ratingView;
+    TextView plotView;
+    TextView genreView;
+    TextView yearView;
+    DBHelper myDbHelper;
+
+    YouTubePlayerView youTubePlayerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        YouTubePlayerView youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtube_player);
+        youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtube_player);
         youTubePlayerView.initialize(API_KEY, this);
 
 
-        TextView titleView = (TextView) findViewById(R.id.titleView);
-        TextView ratingView = (TextView)findViewById(R.id.ratingView);
-        TextView plotView = (TextView)findViewById(R.id.plotView);
-        TextView genreView = (TextView)findViewById(R.id.genreView);
-        TextView yearView = (TextView)findViewById(R.id.yearView);
+        titleView = (TextView) findViewById(R.id.titleView);
+        ratingView = (TextView)findViewById(R.id.ratingView);
+        plotView = (TextView)findViewById(R.id.plotView);
+        genreView = (TextView)findViewById(R.id.genreView);
+        yearView = (TextView)findViewById(R.id.yearView);
 
         Button filterButton = (Button) findViewById(R.id.newFilterButton);
         filterButton.setOnClickListener(new View.OnClickListener(){
@@ -73,8 +83,18 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
             }
         });
 
+        Button newMovie = (Button) findViewById(R.id.newMoviePlease);
+        newMovie.setOnClickListener(new View.OnClickListener(){
 
-        DBHelper myDbHelper = new DBHelper(this);
+            @Override
+            public void onClick(View view){
+                newRandomMovie(view);
+
+            }
+        });
+
+
+        myDbHelper = new DBHelper(this);
 
         try {
 
@@ -110,7 +130,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
         if (!wasRestored) {
-            player.cueVideo(videoUrl); // Plays https://www.youtube.com/watch?v=fhWaJi1Hsfo
+            player.cueVideo(videoUrl);
             player.setPlayerStyle(YouTubePlayer.PlayerStyle.MINIMAL);
         }
     }
@@ -130,6 +150,15 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         startActivity(intent);
     }
 
+    public void newRandomMovie(View v){
+        Movie a = myDbHelper.getRandomMovie();
+        videoUrl = a.getUrl();
+        titleView.setText(a.getTitle());
+        ratingView.setText(Double.toString(a.getRating()));
+        plotView.setText(a.getDesc());
+        yearView.setText(Integer.toString(a.getYear()));
+        genreView.setText("Inte än implementerat");
+    }
 
 
 

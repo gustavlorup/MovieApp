@@ -79,7 +79,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_menu">MenuActivity</string>
-
+    <string name="AboutApp">This is an app developed by two students from Gothenburg University. The main purpose of the app is to, by or without a users preferences, provide a random movie. </string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 

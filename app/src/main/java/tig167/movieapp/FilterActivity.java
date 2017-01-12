@@ -2,7 +2,9 @@ package tig167.movieapp;
 
 import android.app.ActionBar;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -52,13 +54,6 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
         btn7.setOnTouchListener(this);
         btn8.setOnTouchListener(this);
 
-        Spinner spinner = (Spinner)findViewById(R.id.spinner);
-
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.year_array,
-                android.R.layout.simple_spinner_item);
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
 
     bar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener(){
 
@@ -69,19 +64,6 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
                 ratingView.setText("At least: " + String.format("%2.1f", rating));
             }
         });
-
-
-        //btn1.setTag("pressed");
-        /*btn1.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    btn1.setPressed(!btn1.isPressed());
-                }
-                return true;
-            }
-        });
-*/
 
 
 

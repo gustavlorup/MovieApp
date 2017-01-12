@@ -23,6 +23,8 @@ import java.io.IOException;
 
 public class StartUpActivity extends AppCompatActivity{
 
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,8 @@ public class StartUpActivity extends AppCompatActivity{
         /* (2) RegisterActivity */
 
         public void promptSignUp(View v){
+
+
             Intent registerActivity = new Intent(this, RegisterActivity.class);
             startActivity(registerActivity);
         }
