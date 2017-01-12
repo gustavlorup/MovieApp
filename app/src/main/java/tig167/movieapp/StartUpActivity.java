@@ -2,6 +2,7 @@ package tig167.movieapp;
 
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -27,34 +28,6 @@ public class StartUpActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_startup);
-
-        DBHelper myDbHelper;
-        myDbHelper = new DBHelper(this);
-
-        try {
-
-            myDbHelper.createDataBase();
-
-        } catch (IOException ioe) {
-
-            throw new Error("Unable to create database");
-
-        }
-
-        try {
-
-            myDbHelper.openDataBase();
-
-        }catch(SQLException sqle){
-
-            throw sqle;
-
-        }
-
-        myDbHelper.getRandomMovie();
-
-
-
     }
 
         /* Metoder som i xml-filens OnClick ska öppna (1) LoginActivity och (se nedan) */
