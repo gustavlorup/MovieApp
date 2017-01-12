@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -23,158 +24,210 @@
             android:layout_height="wrap_content"
             android:text="Genres"/>
         <LinearLayout
-        android:orientation="horizontal"
-        android:layout_marginTop="30dp"
-        android:gravity="center"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="1">
+            android:orientation="horizontal"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
 
-        <ImageButton
-            android:id="@+id/criminalbutton"
-            android:padding="20dp"
-            android:state_focused="true"
-            android:state_enabled="true"
-            android:layout_width="64dp"
-            android:adjustViewBounds="true"
-            android:layout_height="match_parent"
-            android:background="#ffffff"
-            android:src="@drawable/criminalbutton" />
-        <ImageButton
-            android:id="@+id/fantasybutton"
-            android:padding="20dp"
-            android:layout_width="64dp"
-            android:adjustViewBounds="true"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:src="@drawable/fantasybutton" />
-        <ImageButton
-            android:layout_marginLeft="15dp"
-            android:id="@+id/romancebutton"
-            android:padding="20dp"
-            android:layout_width="64dp"
-            android:adjustViewBounds="true"
-            android:layout_height="match_parent"
-            android:background="#00000000"
-            android:src="@drawable/romancebutton" />
-        <ImageButton
-            android:id="@+id/dramabutton"
-            android:layout_marginBottom="-2dp"
-            android:layout_marginLeft="15dp"
-            android:padding="20dp"
-            android:layout_width="64dp"
-            android:adjustViewBounds="true"
-            android:layout_height="match_parent"
-            android:background="#00000000"
-            android:src="@drawable/dramabutton" />
+            <ImageButton
+                android:id="@+id/criminalbutton"
+                android:padding="20dp"
+                android:state_focused="true"
+                android:state_enabled="true"
+                android:layout_width="64dp"
+                android:adjustViewBounds="true"
+                android:layout_height="match_parent"
+                android:background="#ffffff"
+                android:src="@drawable/criminalbutton" />
+            <ImageButton
+                android:id="@+id/fantasybutton"
+                android:padding="20dp"
+                android:layout_width="64dp"
+                android:adjustViewBounds="true"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:src="@drawable/fantasybutton" />
+            <ImageButton
+                android:layout_marginLeft="15dp"
+                android:id="@+id/romancebutton"
+                android:padding="20dp"
+                android:layout_width="64dp"
+                android:adjustViewBounds="true"
+                android:layout_height="match_parent"
+                android:background="#00000000"
+                android:src="@drawable/romancebutton" />
+            <ImageButton
+                android:id="@+id/dramabutton"
+                android:layout_marginBottom="-2dp"
+                android:layout_marginLeft="15dp"
+                android:padding="20dp"
+                android:layout_width="64dp"
+                android:adjustViewBounds="true"
+                android:layout_height="match_parent"
+                android:background="#00000000"
+                android:src="@drawable/dramabutton" />
 
         </LinearLayout>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_marginTop="110dp"
-        android:gravity="center"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="1"
-        android:id="@+id/linearLayout">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginTop="110dp"
+            android:gravity="center"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:id="@+id/linearLayout">
 
-        <ImageButton
-            android:id="@+id/westernbutton"
-            android:padding="20dp"
-            android:layout_marginRight="10dp"
-            android:state_focused="true"
-            android:state_enabled="true"
-            android:layout_width="64dp"
-            android:adjustViewBounds="true"
-            android:layout_height="match_parent"
-            android:background="#00000000"
-            android:src="@drawable/westernbutton" />
-        <ImageButton
-            android:id="@+id/adventurebutton"
-            android:padding="20dp"
-            android:layout_marginRight="5dp"
-            android:layout_width="64dp"
-            android:adjustViewBounds="true"
-            android:layout_height="match_parent"
-            android:background="#00000000"
-            android:src="@drawable/adventurebutton" />
-        <ImageButton
-            android:layout_marginLeft="15dp"
-            android:id="@+id/documentarybutton"
-            android:padding="20dp"
-            android:layout_width="64dp"
-            android:adjustViewBounds="true"
-            android:layout_height="match_parent"
-            android:background="#00000000"
-            android:src="@drawable/documentarybutton" />
-        <ImageButton
-            android:id="@+id/comedybutton"
-            android:layout_marginBottom="-2dp"
-            android:layout_marginLeft="15dp"
-            android:padding="20dp"
-            android:layout_width="64dp"
-            android:adjustViewBounds="true"
-            android:layout_height="match_parent"
-            android:background="#00000000"
-            android:src="@drawable/comedybutton" />
+            <ImageButton
+                android:id="@+id/westernbutton"
+                android:padding="20dp"
+                android:layout_marginRight="10dp"
+                android:state_focused="true"
+                android:state_enabled="true"
+                android:layout_width="64dp"
+                android:adjustViewBounds="true"
+                android:layout_height="match_parent"
+                android:background="#00000000"
+                android:src="@drawable/westernbutton" />
+            <ImageButton
+                android:id="@+id/adventurebutton"
+                android:padding="20dp"
+                android:layout_marginRight="5dp"
+                android:layout_width="64dp"
+                android:adjustViewBounds="true"
+                android:layout_height="match_parent"
+                android:background="#00000000"
+                android:src="@drawable/adventurebutton" />
+            <ImageButton
+                android:layout_marginLeft="15dp"
+                android:id="@+id/documentarybutton"
+                android:padding="20dp"
+                android:layout_width="64dp"
+                android:adjustViewBounds="true"
+                android:layout_height="match_parent"
+                android:background="#00000000"
+                android:src="@drawable/documentarybutton" />
+            <ImageButton
+                android:id="@+id/comedybutton"
+                android:layout_marginBottom="-2dp"
+                android:layout_marginLeft="15dp"
+                android:padding="20dp"
+                android:layout_width="64dp"
+                android:adjustViewBounds="true"
+                android:layout_height="match_parent"
+                android:background="#00000000"
+                android:src="@drawable/comedybutton" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text="Rating"
+            android:layout_gravity="center"
+            android:textSize="20dp"
+            android:layout_marginTop="15dp"
+            android:id="@+id/editText3" />
+
+        <TextView
+            android:layout_gravity="center"
+            android:textSize="20dp"
+            android:layout_marginTop="20dp"
+            android:text="At least: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ratingView"
+            android:layout_weight="1" />
+
+
+
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="270dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/relativeLayout2">
+
+        <RatingBar
+            style="?android:attr/ratingBarStyle"
+            android:numStars="5"
+            android:rating="3"
+            android:stepSize="0.5"
+            android:isIndicator="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ratingBar"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="368dp"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="Year"
+        />
+
+    <TextView
+        android:layout_gravity="center"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:gravity="center"
+        android:text="__" ></TextView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_marginTop="400dp"
+        android:layout_height="wrap_content">
+        <Spinner
+            android:id="@+id/year_from"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown"
+           />
+
+        <Spinner
+            android:id="@+id/year_to"
+            android:layout_marginLeft="60dp"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown"
+            />
+
     </LinearLayout>
 
 
-    </RelativeLayout>
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="200dp"
-            android:layout_centerHorizontal="true">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:text="Rating"
-                android:layout_gravity="center"
-                android:textSize="20dp"
-                android:layout_marginTop="15dp"
-                android:id="@+id/editText3" />
-
-            <TextView
-                android:layout_gravity="center"
-                android:textSize="20dp"
-                android:layout_marginTop="20dp"
-                android:text="At least: "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/ratingView"
-                android:layout_weight="1" />
-
-        </LinearLayout>
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="270dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true">
-
-            <RatingBar
-                style="?android:attr/ratingBarStyle"
-                android:numStars="5"
-                android:rating="3"
-                android:stepSize="0.5"
-                android:isIndicator="false"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/ratingBar"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true" />
-        </RelativeLayout>
-
-
-
-
-    </RelativeLayout>
+</RelativeLayout>

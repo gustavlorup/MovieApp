@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
+    android:background="@mipmap/secondbackground"
     android:weightSum="1">
 
 
@@ -29,6 +30,7 @@
 
         <TextView
             android:textSize="20dp"
+            android:textColor="#ffffff"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:id="@+id/titleView" />
@@ -40,6 +42,7 @@
             android:layout_marginLeft="280dp" />
         <TextView
             android:textSize="20dp"
+            android:textColor="#ffffff"
             android:layout_alignParentRight="true"
             android:layout_marginRight="5dp"
             android:layout_marginEnd="5dp"
@@ -57,17 +60,20 @@
         <TextView
             android:text="Genres: "
             android:textSize="20dp"
+            android:textColor="#ffffff"
             android:layout_gravity="left"
             android:layout_width="wrap_content"
             android:layout_height="30dp" />
         <TextView
             android:layout_width="wrap_content"
             android:textSize="20dp"
+            android:textColor="#ffffff"
             android:id="@+id/genreView"
             android:layout_height="30dp" />
 
         <TextView
             android:id="@+id/yearView"
+            android:textColor="#ffffff"
             android:layout_width="match_parent"
             android:textSize="20dp"
             android:gravity="right"
@@ -83,25 +89,19 @@
         <TextView
             android:layout_width="wrap_content"
             android:text="Plot"
+            android:textColor="#ffffff"
             android:textSize="20dp"
             android:layout_height="30dp" />
 
     </LinearLayout>
-    <LinearLayout
-        android:layout_margin="5dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
         <TextView
             android:id="@+id/plotView"
-            android:background="@drawable/blackborder"
             android:layout_width="match_parent"
             android:padding="5dp"
+            android:textColor="#ffffff"
             android:gravity="center"
             android:textAlignment="center"
-            android:layout_height="150dp" />
-    </LinearLayout>
+            android:layout_height="80dp" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -111,6 +111,7 @@
         <Button
             android:id ="@+id/newMoviePlease"
             android:layout_width="177dp"
+            android:background="@drawable/transbutton"
             android:text="I want a new movie!"
             android:layout_height="50dp"
             android:layout_weight="0.00" />
@@ -119,7 +120,18 @@
             android:layout_width="177dp"
             android:text="Apply new filters"
             android:layout_height="50dp"
+            android:background="@drawable/transbutton"
             android:layout_weight="0.00"
             android:id="@+id/newFilterButton" />
     </LinearLayout>
+    <Button
+        android:layout_width="177dp"
+        android:text="Sign me out!"
+        android:textAllCaps="false"
+        android:layout_height="50dp"
+        android:background="@drawable/redcustombutton"
+        android:layout_weight="0.00"
+        android:layout_marginTop="20dp"
+        android:onClick="signOut"
+        android:id="@+id/signOutButton" />
 </LinearLayout>

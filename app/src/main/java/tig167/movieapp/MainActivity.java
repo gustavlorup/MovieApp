@@ -1,9 +1,12 @@
 package tig167.movieapp;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.SQLException;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -12,9 +15,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,6 +56,9 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 
     private static final int RECOVERY_REQUEST = 1;
 
+    private FirebaseAuth mAuth;
+    FirebaseUser user;
+    private FirebaseAuth.AuthStateListener mAuthListener;
     TextView titleView;
     TextView ratingView;
     TextView plotView;
@@ -125,6 +133,32 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         genreView.setText("Inte än implementerat");
 
 
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    //Användare inloggad
+                } else {
+                    //Användare utloggad
+                }
+
+            }
+        };
+
+        Button b1 = (Button) findViewById(R.id.signOutButton);
+        b1.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                logOutQuestion();
+            }
+
+        });
+
+
     } /* Slut på onCreate */
 
     @Override
@@ -158,6 +192,38 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         plotView.setText(a.getDesc());
         yearView.setText(Integer.toString(a.getYear()));
         genreView.setText("Inte än implementerat");
+    }
+
+    public void signOut(){
+        mAuth.signOut();
+        Intent intent = new Intent(this, StartUpActivity.class);
+        startActivity(intent);
+        this.finish();
+    }
+
+    public void logOutQuestion() {
+        final Dialog dialog = new Dialog(this);
+        TextView title = new TextView(this);
+        title.setGravity(Gravity.CENTER);
+        title.setAllCaps(true);
+        title.setText("Signing out!");
+        AlertDialog.Builder myBuilder = new AlertDialog.Builder(this);
+        myBuilder.setCustomTitle(title);
+        myBuilder.setMessage("Are you sure you want to log out?");
+        myBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialog.dismiss();
+                finish();
+                signOut();
+            }
+        }).setNegativeButton("No", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i){
+                dialog.dismiss();
+            }
+        }).create().show();
+
     }
 
 

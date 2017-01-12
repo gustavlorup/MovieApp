@@ -25,6 +25,7 @@ import java.io.IOException;
 public class StartUpActivity extends AppCompatActivity{
 
     private FirebaseAuth mAuth;
+    FirebaseUser user;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
@@ -32,15 +33,18 @@ public class StartUpActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_startup);
 
-        final FirebaseUser[] user = {mAuth.getCurrentUser()};
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                user[0] = firebaseAuth.getCurrentUser();
-                if (user[0] != null) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    //Användare inloggad
                 } else {
-
+                    //Användare utloggad
                 }
 
             }
@@ -51,8 +55,11 @@ public class StartUpActivity extends AppCompatActivity{
 
             @Override
             public void onClick(View view) {
-                if(user[0]!=null){
-                    Intent intent = new Intent(this, MainActivity.class);
+                if(user!=null){
+                    signInDirectly(view);
+                }
+                if(user==null){
+                    promptSignIn(view);
                 }
             }
         });
@@ -75,6 +82,13 @@ public class StartUpActivity extends AppCompatActivity{
             startActivity(registerActivity);
         }
 
-    }
+        public void signInDirectly(View v){
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+            }
+
+        }
+
+
 
 

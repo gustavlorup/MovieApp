@@ -85,18 +85,45 @@
 
     <string name="action_settings">Settings</string>
 
-    <string-array name="year_array">
-        <item>Newer than 2010</item>
-        <item>Newer than 2000</item>
-        <item>Newer than 1990</item>
-        <item>Newer than 1980</item>
-        <item>Newer than 1970</item>
-        <item>Newer than 1960</item>
-        <item>Newer than 1950</item>
-        <item>Newer than 1940</item>
-        <item>Newer than 1930</item>
-        <item>Newer than 1920</item>
-        <item>Newer than 1910</item>
+    <string-array name="year_from">
+        <item>1900</item>
+        <item>1910</item>
+        <item>1920</item>
+        <item>1930</item>
+        <item>1940</item>
+        <item>1950</item>
+        <item>1960</item>
+        <item>1970</item>
+        <item>1980</item>
+        <item>1985</item>
+        <item>1990</item>
+        <item>1995</item>
+        <item>2000</item>
+        <item>2005</item>
+        <item>2010</item>
+        <item>2015</item>
+        <item>2020</item>
+    </string-array>
+
+    <string-array name="year_to">
+        <item>2020</item>
+        <item>2015</item>
+        <item>2010</item>
+        <item>2005</item>
+        <item>2000</item>
+        <item>1995</item>
+        <item>1990</item>
+        <item>1985</item>
+        <item>1980</item>
+        <item>1970</item>
+        <item>1960</item>
+        <item>1950</item>
+        <item>1940</item>
+        <item>1930</item>
+        <item>1920</item>
+        <item>1910</item>
+        <item>1900</item>
+
     </string-array>
 
 </resources>

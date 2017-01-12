@@ -54,7 +54,6 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
         btn7.setOnTouchListener(this);
         btn8.setOnTouchListener(this);
 
-
     bar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener(){
 
             @Override
@@ -66,8 +65,45 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
         });
 
 
+       Spinner s1 = (Spinner) findViewById(R.id.year_from);
 
-    }
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.year_from, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        s1.setAdapter(adapter);
+        s1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+    Spinner s2 = (Spinner) findViewById(R.id.year_to);
+
+    ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
+            R.array.year_to, android.R.layout.simple_spinner_item);
+    adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+    s2.setAdapter(adapter2);
+    s2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+
+
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {
+
+        }
+    });
+
+}
 
     @Override
     public boolean onTouch(View v, MotionEvent motionEvent) {
