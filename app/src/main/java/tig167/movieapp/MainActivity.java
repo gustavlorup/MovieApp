@@ -1,5 +1,6 @@
 package tig167.movieapp;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -180,9 +182,9 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     }
 
     public void openFilter(){
-        Intent intent = new Intent(this, FilterActivity.class);
-        startActivity(intent);
-    }
+        Intent askIntent = new Intent(MainActivity.this, FilterActivity.class);
+        startActivityForResult(askIntent, 1);
+}
 
     public void newRandomMovie(View v){
         Movie a = myDbHelper.getRandomMovie();
@@ -225,9 +227,24 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         }).create().show();
 
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+
+        if(resultCode == RESULT_OK){
+            System.out.println("HEJ");
+            titleView.setText(data.getStringExtra("title"));
+            System.out.println(data.getStringExtra("title"));
+            ratingView.setText(data.getStringExtra("rating"));
+            plotView.setText(data.getStringExtra("plot"));
+            yearView.setText(data.getStringExtra("year"));
+            genreView.setText(data.getStringExtra("genre"));
+        }
+
+        }
+
+    }
 
 
 
-}
 
 

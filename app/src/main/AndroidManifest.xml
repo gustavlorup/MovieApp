@@ -30,7 +30,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".FilterActivity" android:exported="true" />
+        <activity android:name=".FilterActivity" android:exported="true"  />
 
         <!-- Aktivitet för login sida -->
         <activity
@@ -45,7 +45,7 @@
 
         <!-- Popupwindow -->
 
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity"  />
 
     </application>
 

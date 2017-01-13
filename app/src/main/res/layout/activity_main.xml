@@ -101,29 +101,33 @@
             android:textColor="#ffffff"
             android:gravity="center"
             android:textAlignment="center"
-            android:layout_height="80dp" />
+            android:layout_height="100dp" />
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <RelativeLayout
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:gravity="center"
-        android:layout_height="80dp">
+        android:layout_height="wrap_content">
         <Button
+            android:textAllCaps="false"
             android:id ="@+id/newMoviePlease"
-            android:layout_width="177dp"
+            android:layout_width="150dp"
             android:background="@drawable/transbutton"
-            android:text="I want a new movie!"
+            android:text="New movie!"
             android:layout_height="50dp"
             android:layout_weight="0.00" />
 
         <Button
-            android:layout_width="177dp"
+            android:textAllCaps="false"
+            android:layout_width="150dp"
             android:text="Apply new filters"
             android:layout_height="50dp"
             android:background="@drawable/transbutton"
             android:layout_weight="0.00"
-            android:id="@+id/newFilterButton" />
-    </LinearLayout>
+            android:id="@+id/newFilterButton"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
     <Button
         android:layout_width="177dp"
         android:text="Sign me out!"
