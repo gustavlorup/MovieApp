@@ -218,7 +218,6 @@
             android:background="@android:drawable/btn_dropdown"
             android:spinnerMode="dropdown"
             />
-
     </LinearLayout>
 
     <Button
@@ -226,7 +225,7 @@
         android:layout_alignParentBottom="true"
         android:textAllCaps="false"
         android:text="Go!"
-        android:onClick="sendMovie"
+        android:onClick="getGenre"
         android:id="@+id/applyFilterOnMovie"
         android:layout_marginBottom="100dp"
         android:layout_centerInParent="true"

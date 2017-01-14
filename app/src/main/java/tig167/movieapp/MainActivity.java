@@ -231,9 +231,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
 
         if(resultCode == RESULT_OK){
-            System.out.println("HEJ");
             titleView.setText(data.getStringExtra("title"));
-            System.out.println(data.getStringExtra("title"));
             ratingView.setText(data.getStringExtra("rating"));
             plotView.setText(data.getStringExtra("plot"));
             yearView.setText(data.getStringExtra("year"));

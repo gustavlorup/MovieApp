@@ -31,7 +31,7 @@ import java.io.IOException;
 import static tig167.movieapp.R.id.ratingBar;
 import static tig167.movieapp.R.id.ratingView;
 
-public class FilterActivity extends AppCompatActivity implements View.OnTouchListener{
+public class FilterActivity extends AppCompatActivity implements View.OnTouchListener {
     ImageButton genres[] = new ImageButton[8];
     TextView warningView;
     DBHelper myDbHelper;
@@ -42,32 +42,37 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
     String year;
     String genre;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
 
 
-        Button applyFilter = (Button)findViewById(R.id.applyFilterOnMovie);
+        Button applyFilter = (Button) findViewById(R.id.applyFilterOnMovie);
 
         /* Deklarera filterknappar */
-        genres[0] = (ImageButton)findViewById(R.id.criminalbutton);
-        genres[1] = (ImageButton)findViewById(R.id.fantasybutton);
-        genres[2] = (ImageButton)findViewById(R.id.dramabutton);
-        genres[3] = (ImageButton)findViewById(R.id.romancebutton);
-        genres[4] = (ImageButton)findViewById(R.id.adventurebutton);
-        genres[5] = (ImageButton)findViewById(R.id.comedybutton);
-        genres[6] = (ImageButton)findViewById(R.id.documentarybutton);
-        genres[7] = (ImageButton)findViewById(R.id.westernbutton);
-
-        Boolean criminal, fantasy, drama, romance, adventure, comedy, documentary, western;
+        genres[0] = (ImageButton) findViewById(R.id.criminalbutton);
+        genres[0].setTag("criminal");
+        genres[1] = (ImageButton) findViewById(R.id.fantasybutton);
+        genres[1].setTag("fantasy");
+        genres[2] = (ImageButton) findViewById(R.id.dramabutton);
+        genres[2].setTag("drama");
+        genres[3] = (ImageButton) findViewById(R.id.romancebutton);
+        genres[3].setTag("romance");
+        genres[4] = (ImageButton) findViewById(R.id.adventurebutton);
+        genres[4].setTag("adventure");
+        genres[5] = (ImageButton) findViewById(R.id.comedybutton);
+        genres[5].setTag("comedy");
+        genres[6] = (ImageButton) findViewById(R.id.documentarybutton);
+        genres[6].setTag("documentary");
+        genres[7] = (ImageButton) findViewById(R.id.westernbutton);
+        genres[7].setTag("western");
 
 
         final RatingBar bar = (RatingBar) findViewById(ratingBar);
-        final TextView ratingView = (TextView)findViewById(R.id.ratingView);
-        warningView = (TextView)findViewById(R.id.warningText);
-        ratingView.setText("At least: " + (String.format("%2.1f", bar.getRating()*2)));
+        final TextView ratingView = (TextView) findViewById(R.id.ratingView);
+        warningView = (TextView) findViewById(R.id.warningText);
+        ratingView.setText("At least: " + (String.format("%2.1f", bar.getRating() * 2)));
 
           /* Lägg på en OnTouchListener på knapparna */
         genres[0].setOnTouchListener(this);
@@ -79,18 +84,18 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
         genres[6].setOnTouchListener(this);
         genres[7].setOnTouchListener(this);
 
-    bar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener(){
+        bar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
 
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                rating  = rating*2;
+                rating = rating * 2;
 
                 ratingView.setText("At least: " + String.format("%2.1f", rating));
             }
         });
 
 
-       Spinner s1 = (Spinner) findViewById(R.id.year_from);
+        Spinner s1 = (Spinner) findViewById(R.id.year_from);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.year_from, android.R.layout.simple_spinner_item);
@@ -109,24 +114,24 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
             }
         });
 
-    Spinner s2 = (Spinner) findViewById(R.id.year_to);
+        Spinner s2 = (Spinner) findViewById(R.id.year_to);
 
-    ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
-            R.array.year_to, android.R.layout.simple_spinner_item);
-    adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
+                R.array.year_to, android.R.layout.simple_spinner_item);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-    s2.setAdapter(adapter2);
-    s2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        s2.setAdapter(adapter2);
+        s2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 
 
-        }
+            }
 
-        @Override
-        public void onNothingSelected(AdapterView<?> adapterView) {
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
-        }
-    });
+            }
+        });
 
 
         myDbHelper = new DBHelper(this);
@@ -145,7 +150,7 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
 
             myDbHelper.openDataBase();
 
-        }catch(SQLException sqle){
+        } catch (SQLException sqle) {
 
             throw sqle;
 
@@ -161,80 +166,79 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
 
         System.out.println(title);
 
-}
+    }
 
     @Override
     public boolean onTouch(View v, MotionEvent motionEvent) {
-        if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
-            switch(v.getId()){
+        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+            switch (v.getId()) {
                 case R.id.criminalbutton:
-                    if(validateGenre()){
+                    if (validateGenre()) {
                         v.setPressed(!v.isPressed());
                     }
-                    if(!validateGenre()){
+                    if (!validateGenre()) {
 
                         v.setPressed(!v.isPressed());
                     }
                     break;
                 case R.id.fantasybutton:
-                    if(validateGenre()){
+                    if (validateGenre()) {
                         v.setPressed(!v.isPressed());
                     }
-                    if(!validateGenre()){
+                    if (!validateGenre()) {
 
                         v.setPressed(!v.isPressed());
                     }
                     break;
                 case R.id.romancebutton:
-                    if(validateGenre()){
+                    if (validateGenre()) {
                         v.setPressed(!v.isPressed());
                     }
-                    if(!validateGenre()){
+                    if (!validateGenre()) {
 
                         v.setPressed(!v.isPressed());
                     }
                     break;
                 case R.id.dramabutton:
-                    if(validateGenre()){
+                    if (validateGenre()) {
                         v.setPressed(!v.isPressed());
                     }
-                    if(!validateGenre()){
+                    if (!validateGenre()) {
 
                         v.setPressed(!v.isPressed());
                     }
                     break;
                 case R.id.adventurebutton:
-                    if(validateGenre()){
+                    if (validateGenre()) {
                         v.setPressed(!v.isPressed());
                     }
-                    if(!validateGenre()){
+                    if (!validateGenre()) {
 
                         v.setPressed(!v.isPressed());
                     }
                     break;
                 case R.id.comedybutton:
-                    if(validateGenre()){
+                    if (validateGenre()) {
                         v.setPressed(!v.isPressed());
                     }
-                    if(!validateGenre()){
+                    if (!validateGenre()) {
 
                         v.setPressed(!v.isPressed());
                     }
                     break;
                 case R.id.documentarybutton:
-                    if(validateGenre()){
+                    if (validateGenre()) {
                         v.setPressed(!v.isPressed());
                     }
-                    if(!validateGenre()){
+                    if (!validateGenre()) {
                         v.setPressed(!v.isPressed());
                     }
                     break;
                 case R.id.westernbutton:
-                    if(validateGenre()){
+                    if (validateGenre()) {
                         v.setPressed(!v.isPressed());
                     }
-                    if(!validateGenre()){
-
+                    if (!validateGenre()) {
                         v.setPressed(!v.isPressed());
                     }
                     break;
@@ -245,7 +249,7 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
         return true;
     }
 
-    public boolean validateGenre(){
+    public boolean validateGenre() {
         boolean valid = true;
         int nr = 0;
 
@@ -265,7 +269,7 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
         return valid;
     }
 
-    public void sendMovie(View v){
+    public void sendMovie(View v) {
         Intent movieIntent = new Intent(FilterActivity.this, MainActivity.class);
         movieIntent.putExtra("url", videoUrl);
         movieIntent.putExtra("title", title);
@@ -275,9 +279,23 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
         movieIntent.putExtra("genre", "Inte än implementerat");
         setResult(RESULT_OK, movieIntent);
         finish();
-
     }
 
+    public String getGenre(View v) {
+        String searchGenre = "";
+        int nr = 0;
+        for (int i = 0; i < genres.length; i++) {
+            if (validateGenre() && genres[i].isPressed() && nr==0) {
+                searchGenre = (String) genres[i].getTag();
+                nr++;
+            }
+            else if(validateGenre() && genres[i].isPressed() && nr>0) {
+                searchGenre = searchGenre + "," + genres[i].getTag();
+            }
+        }
+        System.out.println(searchGenre);
+        return searchGenre;
+    }
 }
 
 

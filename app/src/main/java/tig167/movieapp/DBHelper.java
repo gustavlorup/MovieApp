@@ -161,9 +161,6 @@ import java.util.ArrayList;
                 " FROM movies INNER JOIN (genre INNER JOIN movies_genre ON genre._id = movies_genre.idgenre) ON movies._id = movies_genre.idmovies" +
                 " ORDER BY RANDOM()" +
                 " LIMIT 1;";
-
-
-
         Cursor c = myDataBase.rawQuery(query, null);
         c.moveToFirst();
         String id = c.getString(c.getColumnIndex("_id"));
