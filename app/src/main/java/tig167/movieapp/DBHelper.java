@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by GustavL on 2016-12-05.
@@ -59,46 +60,46 @@ import java.util.ArrayList;
         }
         dbExist = checkDataBase();
 
-        if (!dbExist){
+        if (!dbExist) {
 
             //By calling this method and empty database will be created into the default system path
             //of your application so we are gonna be able to overwrite that database with our database.
             this.getReadableDatabase();
 
-        try {
+            try {
 
-            copyDataBase();
+                copyDataBase();
 
-        } catch (IOException e) {
+            } catch (IOException e) {
 
-            throw new Error("Error copying database");
+                throw new Error("Error copying database");
 
+            }
         }
+
     }
-
-}
-
 
 
     /**
      * Check if the database already exist to avoid re-copying the file each time you open the application.
+     *
      * @return true if it exists, false if it doesn't
      */
-    private boolean checkDataBase(){
+    private boolean checkDataBase() {
 
         SQLiteDatabase checkDB = null;
 
-        try{
+        try {
             String myPath = DB_PATH + DB_NAME;
             checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
 
-        }catch(SQLiteException e){
+        } catch (SQLiteException e) {
 
             //database does't exist yet.
 
         }
 
-        if(checkDB != null){
+        if (checkDB != null) {
 
             checkDB.close();
 
@@ -111,8 +112,8 @@ import java.util.ArrayList;
      * Copies your database from your local assets-folder to the just created empty database in the
      * system folder, from where it can be accessed and handled.
      * This is done by transfering bytestream.
-     * */
-    private void copyDataBase() throws IOException{
+     */
+    private void copyDataBase() throws IOException {
 
         //Open your local db as the input stream
         InputStream myInput = myContext.getAssets().open(DB_NAME);
@@ -126,7 +127,7 @@ import java.util.ArrayList;
         //transfer bytes from the inputfile to the outputfile
         byte[] buffer = new byte[1024];
         int length;
-        while ((length = myInput.read(buffer))>0){
+        while ((length = myInput.read(buffer)) > 0) {
             myOutput.write(buffer, 0, length);
         }
 
@@ -137,7 +138,7 @@ import java.util.ArrayList;
 
     }
 
-    public void openDataBase() throws SQLException{
+    public void openDataBase() throws SQLException {
 
         //Open the database
         String myPath = DB_PATH + DB_NAME;
@@ -148,7 +149,7 @@ import java.util.ArrayList;
     @Override
     public synchronized void close() {
 
-        if(myDataBase != null)
+        if (myDataBase != null)
             myDataBase.close();
 
         super.close();
@@ -169,7 +170,7 @@ import java.util.ArrayList;
         String rating = c.getString(c.getColumnIndex("movieRating"));
         String desc = c.getString(c.getColumnIndex("movieDesc"));
         String url = c.getString(c.getColumnIndex("movieURL"));
-        c.close ();
+        c.close();
 
         /* String query2 = "SELECT moviegenre from GENRE where _ID =" + id;
         Cursor c2 = myDataBase.rawQuery(query2, null);
@@ -181,6 +182,66 @@ import java.util.ArrayList;
         return randomMovie;
     }
 
+    public Movie getFilteredMovie(String genre1, String genre2, String genre3, String Rating, String year_from, String year_to) {
+        Movie FilteredMovie = null;
+        String query = "";
+        String query2 = "";
+        Cursor c;
+        Cursor c1;
+
+        if (genre3 == null){
+            query = "SELECT movies.*\n" +
+                    "FROM movies INNER JOIN (genre INNER JOIN movies_genre ON genre.[_id] = movies_genre.idgenre) ON movies.[_id] = movies_genre.idmovies\n" +
+                    "WHERE ((((movies_genre.idgenre)="+ genre1 + ") OR ((movies_genre.idgenre) = "+ genre2 +")) AND (movies.movieRating)>="+ Rating +")" +
+                    " AND ((movies.year) BETWEEN " + year_from + " AND " + year_to + ")\n" +
+                    "ORDER BY RANDOM()\n" +
+                    "LIMIT 1;";
+            c = myDataBase.rawQuery(query,null);
+            c.moveToFirst();
+            String id = c.getString(c.getColumnIndex("_id"));
+            String title = c.getString(c.getColumnIndex("title"));
+            String year = c.getString(c.getColumnIndex("year"));
+            String rating = c.getString(c.getColumnIndex("movieRating"));
+            String desc = c.getString(c.getColumnIndex("movieDesc"));
+            String url = c.getString(c.getColumnIndex("movieURL"));
+            c.close ();
+
+            query2 = "SELECT genre.moviegenre FROM movies " +
+                    "INNER JOIN (genre INNER JOIN movies_genre ON genre.[_id] = movies_genre.idgenre) ON movies.[_id] = movies_genre.idmovies " +
+                    "WHERE movies._id =" + id + ";";
+            c1 = myDataBase.rawQuery(query2,null);
+
+            ArrayList<String> genres = new ArrayList<>();
+
+            String row[] = new String[c1.getCount()];
+            while(c1.moveToNext()){
+                for(int i = 0; i < c1.getCount(); i++){
+                    row[i] = c1.getString(0);
+                    if(!genres.contains(row[i])) {
+                        genres.add(row[i]);
+                    }
+                }
+            }
+
+
+            c1.close();
+            FilteredMovie = new Movie(Integer.parseInt(id), title, Integer.parseInt(year), Double.parseDouble(rating), desc, url, genres);
+
+        }
+
+        else if(genre2==null && genre3==null){
+
+
+        }
+
+        else if (genre1==null && genre2==null && genre3==null){
+
+        }
+
+        return FilteredMovie;
+    }
+
+
 
 
     @Override
@@ -190,74 +251,12 @@ import java.util.ArrayList;
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-       if(newVersion>oldVersion){
-           System.out.println("Database version..");
-           myContext.deleteDatabase(DB_NAME);
-       }
+        if (newVersion > oldVersion) {
+            System.out.println("Database version..");
+            myContext.deleteDatabase(DB_NAME);
+        }
 
 
     }
-
-    // Add your public helper methods to access and get content from the database.
-    // You could return cursors by doing "return myDataBase.query(....)" so it'd be easy
-    // to you to create adapters for your views.
-
 }
 
-    /*
-    private static final int DATABASE_VERSION = 1;
-    private static String TAG ="DBHelper";
-    private static final String DB_NAME = "movies";
-    private SQLiteDatabase myDataBase;
-    private final Context myContext;
-
-    private static final String TABLE_MOVIES = "movies";
-
-    private static final String KEY_ID = "idmovies";
-    private static final String KEY_TITLE ="title";
-    private static final String KEY_YEAR = "year";
-    private static final String KEY_RATING = "movieRating";
-    private static final String KEY_DESC = "movieDesc";
-    private static final String KEY_URL ="movieURL";
-
-
-    public DBHelper(Context context) {
-        super(context, DB_NAME, null, DATABASE_VERSION);
-        this.myContext = context;
-    }
-
-
-    public Movie getMovie(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        /* Cursor cursor = db.query(TABLE_MOVIES, new String[] { KEY_ID,
-                        KEY_TITLE, KEY_YEAR, KEY_RATING, KEY_DESC, KEY_URL }, KEY_ID + "=?",
-                new String[] { String.valueOf(id) }, null, null, null, null);
-
-
-
-        String sql = "SELECT movies.title " + "FROM movies INNER JOIN (genre INNER JOIN movies_genre ON genre.genreID = movies_genre.idgenre) ON movies.idmovies = movies_genre.idmovies " +
-                "ORDER BY RANDOM() " + "LIMIT 1;";
-
-        Cursor cursor = db.rawQuery(sql, null);
-        if (cursor != null)
-            cursor.moveToFirst();
-        Movie randomMovie = new Movie(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getInt(2), cursor.getDouble(3), cursor.getString(4), cursor.getString(5));
-// return shop
-        return randomMovie;
-    }
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-    }
-
-    // Add your public helper methods to access and get content from the database.
-    // You could return cursors by doing "return myDataBase.query(....)" so it'd be easy
-    // to you to create adapters for your views.
-
-    /**
-     * Hjälpmetoder för att hämta data från databsen. Exempelvis med cursors
-     * */

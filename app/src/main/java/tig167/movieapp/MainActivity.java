@@ -126,15 +126,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 
         }
 
-        Movie a = myDbHelper.getRandomMovie();
-        videoUrl = a.getUrl();
-        titleView.setText(a.getTitle());
-        ratingView.setText(Double.toString(a.getRating()));
-        plotView.setText(a.getDesc());
-        yearView.setText(Integer.toString(a.getYear()));
-        genreView.setText("Inte än implementerat");
-
-
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 

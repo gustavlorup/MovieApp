@@ -156,15 +156,9 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
 
         }
 
-        Movie a = myDbHelper.getRandomMovie();
-        videoUrl = a.getUrl();
-        title = a.getTitle();
-        rating = (Double.toString(a.getRating()));
-        plot = a.getDesc();
-        year = (Integer.toString(a.getYear()));
-        genre = ("Inte än implementerat");
-
-        System.out.println(title);
+        Movie a = myDbHelper.getFilteredMovie("2","8", null, "7", "1900", "2010");
+        System.out.println(a.getTitle());
+        System.out.println(a.getGenres());
 
     }
 
@@ -265,7 +259,6 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
                 }
             }
         }
-
         return valid;
     }
 
