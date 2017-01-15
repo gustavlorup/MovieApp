@@ -27,6 +27,7 @@ import android.widget.TextView;
 import com.google.android.youtube.player.internal.v;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static tig167.movieapp.R.id.ratingBar;
 import static tig167.movieapp.R.id.ratingView;
@@ -40,7 +41,7 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
     String rating;
     String plot;
     String year;
-    String genre;
+    ArrayList<String> genre;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,8 +158,6 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
         }
 
         Movie a = myDbHelper.getFilteredMovie("2","8", null, "7", "1900", "2010");
-        System.out.println(a.getTitle());
-        System.out.println(a.getGenres());
 
     }
 
@@ -264,13 +263,18 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
 
     public void sendMovie(View v) {
         Intent movieIntent = new Intent(FilterActivity.this, MainActivity.class);
-        movieIntent.putExtra("url", videoUrl);
-        movieIntent.putExtra("title", title);
+
+        Movie a = myDbHelper.getFilteredMovie("2","8", null, "7", "1900", "2010");
+        rating = (String.valueOf(a.getRating()));
+        year = String.valueOf(a.getYear());
+        movieIntent.putExtra("url", a.getUrl());
+        movieIntent.putExtra("title", a.getTitle());
         movieIntent.putExtra("rating", rating);
-        movieIntent.putExtra("plot", plot);
+        movieIntent.putExtra("plot", a.getDesc());
         movieIntent.putExtra("year", year);
-        movieIntent.putExtra("genre", "Inte än implementerat");
+        movieIntent.putExtra("genre", a.getGenres());
         setResult(RESULT_OK, movieIntent);
+
         finish();
     }
 

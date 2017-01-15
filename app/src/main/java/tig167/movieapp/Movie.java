@@ -118,7 +118,9 @@ public class Movie {
     public String getUrl(){
         return this.url;
     }
-    public ArrayList<String> getGenres(){return this.arraylistwithgenres;}
+    public String getGenres(){
+        return this.arraylistwithgenres.toString();
+    }
 
     @Override
     public String toString(){

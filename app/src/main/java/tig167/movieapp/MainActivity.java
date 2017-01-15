@@ -226,6 +226,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
             ratingView.setText(data.getStringExtra("rating"));
             plotView.setText(data.getStringExtra("plot"));
             yearView.setText(data.getStringExtra("year"));
+            System.out.println(data.getStringExtra("genre"));
             genreView.setText(data.getStringExtra("genre"));
         }
 
