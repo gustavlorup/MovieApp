@@ -134,20 +134,29 @@
         </LinearLayout>
 
     <LinearLayout
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="200dp"
         android:layout_centerHorizontal="true">
         <TextView
-            android:layout_gravity="center"
-            android:textSize="20dp"
-            android:layout_marginTop="20dp"
-            android:text="Rating: At least "
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/ratingView"
-            android:layout_weight="1" />
+        android:gravity="center"
+        android:textSize="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Rating: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ratingText"
+        android:layout_weight="1" />
+        <TextView
+        android:gravity="center"
+        android:textSize="20dp"
+        android:layout_marginTop="20dp"
+        android:text=" "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ratingView"
+        android:layout_weight="1" />
     </LinearLayout>
     <RelativeLayout
         android:layout_width="wrap_content"

@@ -182,6 +182,7 @@ import java.util.List;
         return randomMovie;
     }
 
+
     public Movie getFilteredMovie(String genre1, String genre2, String genre3, String Rating, String year_from, String year_to) {
         Movie FilteredMovie = null;
         String query = "";
@@ -189,7 +190,7 @@ import java.util.List;
         Cursor c;
         Cursor c1;
 
-        if (genre3 == null){
+        if (genre1!=null && genre2!=null && genre3==null){
             query = "SELECT movies.*\n" +
                     "FROM movies INNER JOIN (genre INNER JOIN movies_genre ON genre.[_id] = movies_genre.idgenre) ON movies.[_id] = movies_genre.idmovies\n" +
                     "WHERE ((((movies_genre.idgenre)="+ genre1 + ") OR ((movies_genre.idgenre) = "+ genre2 +")) AND (movies.movieRating)>="+ Rating +")" +
@@ -223,23 +224,138 @@ import java.util.List;
                 }
             }
 
+            c1.close();
+            FilteredMovie = new Movie(Integer.parseInt(id), title, Integer.parseInt(year), Double.parseDouble(rating), desc, url, (ArrayList<String>) genres);
+
+        }
+
+        else if(genre1!=null && genre2==null && genre3==null) {
+
+            query = "SELECT movies.*\n" +
+                    "FROM movies INNER JOIN (genre INNER JOIN movies_genre ON genre.[_id] = movies_genre.idgenre) ON movies.[_id] = movies_genre.idmovies\n" +
+                    "WHERE ((((movies_genre.idgenre)=" + genre1 + ") AND (movies.movieRating)>=" + Rating + ")" +
+                    " AND ((movies.year) BETWEEN " + year_from + " AND " + year_to + "))\n" +
+                    "ORDER BY RANDOM()\n" +
+                    "LIMIT 1;";
+            c = myDataBase.rawQuery(query, null);
+            c.moveToFirst();
+            String id = c.getString(c.getColumnIndex("_id"));
+            String title = c.getString(c.getColumnIndex("title"));
+            String year = c.getString(c.getColumnIndex("year"));
+            String rating = c.getString(c.getColumnIndex("movieRating"));
+            String desc = c.getString(c.getColumnIndex("movieDesc"));
+            String url = c.getString(c.getColumnIndex("movieURL"));
+            c.close();
+
+
+            query2 = "SELECT genre.moviegenre FROM movies " +
+                    "INNER JOIN (genre INNER JOIN movies_genre ON genre.[_id] = movies_genre.idgenre) ON movies.[_id] = movies_genre.idmovies " +
+                    "WHERE movies._id =" + id + ";";
+            c1 = myDataBase.rawQuery(query2, null);
+
+
+            ArrayList<String> genres = new ArrayList<>();
+
+            String row[] = new String[c1.getCount()];
+            while(c1.moveToNext()){
+                for(int i = 0; i < c1.getCount(); i++){
+                    row[i] = c1.getString(0);
+                    if(!genres.contains(row[i])) {
+                        genres.add(row[i]);
+                    }
+                }
+            }
 
             c1.close();
+
+            FilteredMovie = new Movie(Integer.parseInt(id), title, Integer.parseInt(year), Double.parseDouble(rating), desc, url, (ArrayList<String>) genres);
+
+
+        }
+
+        else if (genre1==null && genre2==null && genre3==null) {
+            query = "SELECT movies.*\n" +
+                    "FROM movies INNER JOIN (genre INNER JOIN movies_genre ON genre.[_id] = movies_genre.idgenre) ON movies.[_id] = movies_genre.idmovies\n" +
+                    "WHERE ((movies.movieRating)>=" + Rating + ")" +
+                    " AND ((movies.year) BETWEEN " + year_from + " AND " + year_to + ")\n" +
+                    "ORDER BY RANDOM()\n" +
+                    "LIMIT 1;";
+            c = myDataBase.rawQuery(query, null);
+            c.moveToFirst();
+            String id = c.getString(c.getColumnIndex("_id"));
+            String title = c.getString(c.getColumnIndex("title"));
+            String year = c.getString(c.getColumnIndex("year"));
+            String rating = c.getString(c.getColumnIndex("movieRating"));
+            String desc = c.getString(c.getColumnIndex("movieDesc"));
+            String url = c.getString(c.getColumnIndex("movieURL"));
+            c.close();
+
+
+            query2 = "SELECT genre.moviegenre FROM movies " +
+                    "INNER JOIN (genre INNER JOIN movies_genre ON genre.[_id] = movies_genre.idgenre) ON movies.[_id] = movies_genre.idmovies " +
+                    "WHERE movies._id =" + id + ";";
+            c1 = myDataBase.rawQuery(query2, null);
+            ArrayList<String> genres = new ArrayList<>();
+            String row[] = new String[c1.getCount()];
+            while(c1.moveToNext()){
+                for(int i = 0; i < c1.getCount(); i++){
+                    row[i] = c1.getString(0);
+                    if(!genres.contains(row[i])) {
+                        genres.add(row[i]);
+                    }
+                }
+            }
+
+            c1.close();
+
             FilteredMovie = new Movie(Integer.parseInt(id), title, Integer.parseInt(year), Double.parseDouble(rating), desc, url, genres);
 
-        }
 
-        else if(genre2==null && genre3==null){
-
-
-        }
-
-        else if (genre1==null && genre2==null && genre3==null){
-
-        }
-
-        return FilteredMovie;
     }
+
+
+        else if(genre1!=null && genre2!=null && genre3!=null){
+
+            query = "SELECT movies.*\n" +
+                    "FROM movies INNER JOIN (genre INNER JOIN movies_genre ON genre.[_id] = movies_genre.idgenre) ON movies.[_id] = movies_genre.idmovies\n" +
+                    "WHERE ((((movies_genre.idgenre)=" + genre1 + ") OR ((movies_genre.idgenre) = " + genre2 + ") AND ((movies_genre.idgenre) = " + genre3 + ")) AND (movies.movieRating)>=" + Rating + ")" +
+                    " AND ((movies.year) BETWEEN " + year_from + " AND " + year_to + ")\n" +
+                    "ORDER BY RANDOM()\n" +
+                    "LIMIT 1;";
+            c = myDataBase.rawQuery(query, null);
+            c.moveToFirst();
+            String id = c.getString(c.getColumnIndex("_id"));
+            String title = c.getString(c.getColumnIndex("title"));
+            String year = c.getString(c.getColumnIndex("year"));
+            String rating = c.getString(c.getColumnIndex("movieRating"));
+            String desc = c.getString(c.getColumnIndex("movieDesc"));
+            String url = c.getString(c.getColumnIndex("movieURL"));
+            c.close();
+
+
+            query2 = "SELECT genre.moviegenre FROM movies " +
+                    "INNER JOIN (genre INNER JOIN movies_genre ON genre.[_id] = movies_genre.idgenre) ON movies.[_id] = movies_genre.idmovies " +
+                    "WHERE movies._id =" + id + ";";
+            c1 = myDataBase.rawQuery(query2, null);
+
+
+            ArrayList<String> genres = new ArrayList<>();
+
+            String row[] = new String[c1.getCount()];
+            while (c1.moveToNext()) {
+                for (int i = 0; i < c1.getCount(); i++) {
+                    row[i] = c1.getString(0);
+                    if (!genres.contains(row[i])) {
+                        genres.add(row[i]);
+                    }
+                }
+            }
+            c1.close();
+            FilteredMovie = new Movie(Integer.parseInt(id), title, Integer.parseInt(year), Double.parseDouble(rating), desc, url, (ArrayList<String>) genres);
+        }
+            return FilteredMovie;
+        }
+
 
 
 

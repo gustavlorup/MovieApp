@@ -46,18 +46,16 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 
 
     private String API_KEY = "AIzaSyAS-LOzdzRz1ni16kvTKrPU_60HQd_IYeo";
-    public static String videoUrl;
+    public String url;
+    public String newUrl;
     public static String movieTitle;
     public static int year;
     public static int movieId;
     public static double rating;
     public static String desc;
-    public static String url;
 
     YouTubePlayer player;
-
     private static final int RECOVERY_REQUEST = 1;
-
     private FirebaseAuth mAuth;
     FirebaseUser user;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -102,7 +100,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 
             }
         });
-
+        url = "R2GKVtWsXKY";
 
         myDbHelper = new DBHelper(this);
 
@@ -157,10 +155,14 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
         if (!wasRestored) {
-            player.cueVideo(videoUrl);
+            player.loadVideo(url);
+        }
+        else{
+            player.loadVideo(newUrl);
+        }
             player.setPlayerStyle(YouTubePlayer.PlayerStyle.MINIMAL);
         }
-    }
+
 
     @Override
     public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult errorReason) {
@@ -179,7 +181,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 
     public void newRandomMovie(View v){
         Movie a = myDbHelper.getRandomMovie();
-        videoUrl = a.getUrl();
+        url = a.getUrl();
         titleView.setText(a.getTitle());
         ratingView.setText(Double.toString(a.getRating()));
         plotView.setText(a.getDesc());
@@ -229,8 +231,9 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
             System.out.println(data.getStringExtra("genre"));
             genreView.setText(data.getStringExtra("genre"));
         }
+    }
 
-        }
+
 
     }
 

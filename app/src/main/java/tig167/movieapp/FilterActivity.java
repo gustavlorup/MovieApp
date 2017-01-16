@@ -31,6 +31,7 @@ import java.util.ArrayList;
 
 import static tig167.movieapp.R.id.ratingBar;
 import static tig167.movieapp.R.id.ratingView;
+import static tig167.movieapp.R.id.youtube_player;
 
 public class FilterActivity extends AppCompatActivity implements View.OnTouchListener {
     ImageButton genres[] = new ImageButton[8];
@@ -42,6 +43,12 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
     String plot;
     String year;
     ArrayList<String> genre;
+    TextView ratingView;
+    ArrayAdapter<CharSequence> adapter;
+    ArrayAdapter<CharSequence> adapter2;
+    Spinner s1;
+    Spinner s2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,27 +60,27 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
 
         /* Deklarera filterknappar */
         genres[0] = (ImageButton) findViewById(R.id.criminalbutton);
-        genres[0].setTag("criminal");
+        genres[0].setTag("1");
         genres[1] = (ImageButton) findViewById(R.id.fantasybutton);
-        genres[1].setTag("fantasy");
+        genres[1].setTag("10");
         genres[2] = (ImageButton) findViewById(R.id.dramabutton);
-        genres[2].setTag("drama");
+        genres[2].setTag("8");
         genres[3] = (ImageButton) findViewById(R.id.romancebutton);
-        genres[3].setTag("romance");
+        genres[3].setTag("17");
         genres[4] = (ImageButton) findViewById(R.id.adventurebutton);
-        genres[4].setTag("adventure");
+        genres[4].setTag("2");
         genres[5] = (ImageButton) findViewById(R.id.comedybutton);
-        genres[5].setTag("comedy");
+        genres[5].setTag("5");
         genres[6] = (ImageButton) findViewById(R.id.documentarybutton);
-        genres[6].setTag("documentary");
+        genres[6].setTag("7");
         genres[7] = (ImageButton) findViewById(R.id.westernbutton);
-        genres[7].setTag("western");
+        genres[7].setTag("22");
 
 
         final RatingBar bar = (RatingBar) findViewById(ratingBar);
-        final TextView ratingView = (TextView) findViewById(R.id.ratingView);
+        ratingView = (TextView) findViewById(R.id.ratingView);
         warningView = (TextView) findViewById(R.id.warningText);
-        ratingView.setText("At least: " + (String.format("%2.1f", bar.getRating() * 2)));
+        ratingView.setText(String.format("%2.1f", bar.getRating() * 2).replace(",", "."));
 
           /* Lägg på en OnTouchListener på knapparna */
         genres[0].setOnTouchListener(this);
@@ -91,14 +98,14 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 rating = rating * 2;
 
-                ratingView.setText("At least: " + String.format("%2.1f", rating));
+                ratingView.setText((String.format("%2.1f", rating).replace(",", ".")));
             }
         });
 
 
-        Spinner s1 = (Spinner) findViewById(R.id.year_from);
+        s1 = (Spinner) findViewById(R.id.year_from);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+        adapter = ArrayAdapter.createFromResource(this,
                 R.array.year_from, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -115,9 +122,9 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
             }
         });
 
-        Spinner s2 = (Spinner) findViewById(R.id.year_to);
+        s2 = (Spinner) findViewById(R.id.year_to);
 
-        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
+        adapter2 = ArrayAdapter.createFromResource(this,
                 R.array.year_to, android.R.layout.simple_spinner_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -156,8 +163,6 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
             throw sqle;
 
         }
-
-        Movie a = myDbHelper.getFilteredMovie("2","8", null, "7", "1900", "2010");
 
     }
 
@@ -263,34 +268,75 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
 
     public void sendMovie(View v) {
         Intent movieIntent = new Intent(FilterActivity.this, MainActivity.class);
+        ArrayList<String> searchGenres = getGenres(v);
+        if(searchGenres.size()==3){
+            Movie a = myDbHelper.getFilteredMovie(searchGenres.get(0), searchGenres.get(1), searchGenres.get(2), ratingView.getText().toString(),
+                    s1.getSelectedItem().toString(), s2.getSelectedItem().toString());
 
-        Movie a = myDbHelper.getFilteredMovie("2","8", null, "7", "1900", "2010");
-        rating = (String.valueOf(a.getRating()));
-        year = String.valueOf(a.getYear());
-        movieIntent.putExtra("url", a.getUrl());
-        movieIntent.putExtra("title", a.getTitle());
-        movieIntent.putExtra("rating", rating);
-        movieIntent.putExtra("plot", a.getDesc());
-        movieIntent.putExtra("year", year);
-        movieIntent.putExtra("genre", a.getGenres());
-        setResult(RESULT_OK, movieIntent);
+            movieIntent.putExtra("url", a.getUrl());
+            movieIntent.putExtra("title", a.getTitle());
+            movieIntent.putExtra("rating", (String.valueOf(a.getRating())));
+            movieIntent.putExtra("plot", a.getDesc());
+            movieIntent.putExtra("year", (String.valueOf(a.getYear())));
+            movieIntent.putExtra("genre", a.getGenres());
+            setResult(RESULT_OK, movieIntent);
 
-        finish();
+            finish();
+        }
+
+        else if(searchGenres.size()==2){
+            Movie a = myDbHelper.getFilteredMovie(searchGenres.get(0), searchGenres.get(1), null, ratingView.getText().toString(),
+                    s1.getSelectedItem().toString(), s2.getSelectedItem().toString());
+
+            movieIntent.putExtra("url", a.getUrl());
+            movieIntent.putExtra("title", a.getTitle());
+            movieIntent.putExtra("rating", (String.valueOf(a.getRating())));
+            movieIntent.putExtra("plot", a.getDesc());
+            movieIntent.putExtra("year", (String.valueOf(a.getYear())));
+            movieIntent.putExtra("genre", a.getGenres());
+            setResult(RESULT_OK, movieIntent);
+
+            finish();
+        }
+
+        else if(searchGenres.size()==1){
+            Movie a = myDbHelper.getFilteredMovie(searchGenres.get(0), null, null, ratingView.getText().toString(),
+                    s1.getSelectedItem().toString(), s2.getSelectedItem().toString());
+
+            movieIntent.putExtra("url", a.getUrl());
+            movieIntent.putExtra("title", a.getTitle());
+            movieIntent.putExtra("rating", (String.valueOf(a.getRating())));
+            movieIntent.putExtra("plot", a.getDesc());
+            movieIntent.putExtra("year", (String.valueOf(a.getYear())));
+            movieIntent.putExtra("genre", a.getGenres());
+            setResult(RESULT_OK, movieIntent);
+
+            finish();
+        }
+
+
+        else if(searchGenres.size()==0){
+            Movie a = myDbHelper.getFilteredMovie(null, null, null, ratingView.getText().toString(),
+                    s1.getSelectedItem().toString(), s2.getSelectedItem().toString());
+            movieIntent.putExtra("url", a.getUrl());
+            movieIntent.putExtra("title", a.getTitle());
+            movieIntent.putExtra("rating", (String.valueOf(a.getRating())));
+            movieIntent.putExtra("plot", a.getDesc());
+            movieIntent.putExtra("year", (String.valueOf(a.getYear())));
+            movieIntent.putExtra("genre", a.getGenres());
+            setResult(RESULT_OK, movieIntent);
+            finish();
+        }
+
     }
 
-    public String getGenre(View v) {
-        String searchGenre = "";
-        int nr = 0;
-        for (int i = 0; i < genres.length; i++) {
-            if (validateGenre() && genres[i].isPressed() && nr==0) {
-                searchGenre = (String) genres[i].getTag();
-                nr++;
-            }
-            else if(validateGenre() && genres[i].isPressed() && nr>0) {
-                searchGenre = searchGenre + "," + genres[i].getTag();
+    public ArrayList<String> getGenres(View v) {
+        ArrayList<String> searchGenre = new ArrayList<>();
+        for (ImageButton genre1 : genres) {
+            if (validateGenre() && genre1.isPressed()) {
+                searchGenre.add(genre1.getTag().toString());
             }
         }
-        System.out.println(searchGenre);
         return searchGenre;
     }
 }
