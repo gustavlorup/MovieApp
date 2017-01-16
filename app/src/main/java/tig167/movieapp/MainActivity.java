@@ -54,7 +54,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     public static double rating;
     public static String desc;
 
-    YouTubePlayer player;
+    YouTubePlayer YPlayer;
     private static final int RECOVERY_REQUEST = 1;
     private FirebaseAuth mAuth;
     FirebaseUser user;
@@ -154,14 +154,12 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
+        this.YPlayer = player;
         if (!wasRestored) {
             player.loadVideo(url);
         }
-        else{
-            player.loadVideo(newUrl);
-        }
-            player.setPlayerStyle(YouTubePlayer.PlayerStyle.MINIMAL);
-        }
+        player.setPlayerStyle(YouTubePlayer.PlayerStyle.MINIMAL);
+    }
 
 
     @Override
@@ -232,7 +230,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
             genreView.setText(data.getStringExtra("genre"));
         }
     }
-
 
 
     }
