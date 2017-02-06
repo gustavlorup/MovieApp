@@ -1,19 +1,9 @@
 package tig167.movieapp;
 
-import android.app.ActionBar;
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.SQLException;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.LayerDrawable;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,25 +14,16 @@ import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.google.android.youtube.player.internal.v;
-
 import java.io.IOException;
 import java.util.ArrayList;
 
 import static tig167.movieapp.R.id.ratingBar;
-import static tig167.movieapp.R.id.ratingView;
-import static tig167.movieapp.R.id.youtube_player;
 
 public class FilterActivity extends AppCompatActivity implements View.OnTouchListener {
-    ImageButton genres[] = new ImageButton[8];
+
+    ImageButton genres[] = new ImageButton[8]; // Genreknapperna
     TextView warningView;
     DBHelper myDbHelper;
-    String videoUrl;
-    String title;
-    String rating;
-    String plot;
-    String year;
-    ArrayList<String> genre;
     TextView ratingView;
     ArrayAdapter<CharSequence> adapter;
     ArrayAdapter<CharSequence> adapter2;
@@ -58,7 +39,7 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
 
         Button applyFilter = (Button) findViewById(R.id.applyFilterOnMovie);
 
-        /* Deklarera filterknappar */
+        /* Deklarerar filterknappar */
         genres[0] = (ImageButton) findViewById(R.id.criminalbutton);
         genres[0].setTag("1");
         genres[1] = (ImageButton) findViewById(R.id.fantasybutton);
@@ -78,11 +59,11 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
 
 
         final RatingBar bar = (RatingBar) findViewById(ratingBar);
-        ratingView = (TextView) findViewById(R.id.ratingView);
+         ratingView = (TextView) findViewById(R.id.ratingView);
         warningView = (TextView) findViewById(R.id.warningText);
         ratingView.setText(String.format("%2.1f", bar.getRating() * 2).replace(",", "."));
 
-          /* Lägg på en OnTouchListener på knapparna */
+          /* Lägger på en OnTouchListener på knapparna */
         genres[0].setOnTouchListener(this);
         genres[1].setOnTouchListener(this);
         genres[2].setOnTouchListener(this);
@@ -91,6 +72,9 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
         genres[5].setOnTouchListener(this);
         genres[6].setOnTouchListener(this);
         genres[7].setOnTouchListener(this);
+
+
+        /* Visar ratingen och dubblar denna då värdet endast går från 1-5. */
 
         bar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
 
@@ -165,6 +149,10 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
         }
 
     }
+
+    /* Hantering av genre-knapparna. I XML är det två olika genre-bilder beroende på vilken state den har.
+       Den tittar först om validateGenres är false eller true och gör beroende på detta bilderna itryckta eller tvärtom
+     */
 
     @Override
     public boolean onTouch(View v, MotionEvent motionEvent) {
@@ -247,6 +235,7 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
         return true;
     }
 
+    /* Säkerställer att användaren endast klickar i max tre st genres som sök-kriterie */
     public boolean validateGenre() {
         boolean valid = true;
         int nr = 0;
@@ -265,6 +254,11 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
         }
         return valid;
     }
+
+    /* Här skapas en film som skickas över till MainActivity med tag: "RESULT_OK".
+       Den tittar hur många genres som är itrycka och gör anrop till DBHelper
+       beroende på hur många som är itryckta
+     */
 
     public void sendMovie(View v) {
         Intent movieIntent = new Intent(FilterActivity.this, MainActivity.class);
@@ -330,6 +324,7 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
 
     }
 
+    /* Funktion som hämtar de genres som är iklickade som sen ska användas för att bedöma vilken SQL-statement som ska göras */
     public ArrayList<String> getGenres(View v) {
         ArrayList<String> searchGenre = new ArrayList<>();
         for (ImageButton genre1 : genres) {

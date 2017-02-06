@@ -17,14 +17,11 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by GustavL on 2016-12-05.
- */
-
  public class DBHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
     private static final String TAG = "";
+    /* Default systemväg för applikations databas */
     //The Android's default system path of your application database.
     private static String DB_PATH = "/data/data/tig167.movieapp/databases/";
 
@@ -34,12 +31,6 @@ import java.util.List;
 
     private final Context myContext;
 
-    /**
-     * Constructor
-     * Takes and keeps a reference of the passed context in order to access to the application assets and resources.
-     *
-     * @param context
-     */
     public DBHelper(Context context) {
 
         super(context, DB_NAME, null, DATABASE_VERSION);
@@ -47,8 +38,7 @@ import java.util.List;
     }
 
     /**
-     * Creates a empty database on the system and rewrites it with your own database.
-     */
+     * Skapar en tom database på systemet och gör om det till vår egna */
     public void createDataBase() throws IOException {
 
         boolean dbExist = checkDataBase();
@@ -56,14 +46,14 @@ import java.util.List;
         if (dbExist) {
             System.out.println("Database exists");
             this.getWritableDatabase();
-            //do nothing - database already exist
+            /* Databasen existerar, gör inget! */
         }
         dbExist = checkDataBase();
 
         if (!dbExist) {
 
-            //By calling this method and empty database will be created into the default system path
-            //of your application so we are gonna be able to overwrite that database with our database.
+            /* Om databasen inte finns så skapar vi en till som overridar vår default i systemet*/
+
             this.getReadableDatabase();
 
             try {
@@ -172,13 +162,26 @@ import java.util.List;
         String url = c.getString(c.getColumnIndex("movieURL"));
         c.close();
 
-        /* String query2 = "SELECT moviegenre from GENRE where _ID =" + id;
-        Cursor c2 = myDataBase.rawQuery(query2, null);
-        String genre = c2.getString(c.getColumnIndex("moviegenre"));
-        System.out.println(genre);
+        String query2 = "SELECT genre.moviegenre FROM movies " +
+                "INNER JOIN (genre INNER JOIN movies_genre ON genre.[_id] = movies_genre.idgenre) ON movies.[_id] = movies_genre.idmovies " +
+                "WHERE movies._id =" + id + ";";
+        Cursor c1 = myDataBase.rawQuery(query2,null);
 
-*/
-        Movie randomMovie = new Movie(Integer.parseInt(id), title, Integer.parseInt(year), Double.parseDouble(rating), desc, url);
+        ArrayList<String> genres = new ArrayList<>();
+
+        String row[] = new String[c1.getCount()];
+        while(c1.moveToNext()){
+            for(int i = 0; i < c1.getCount(); i++){
+                row[i] = c1.getString(0);
+                if(!genres.contains(row[i])) {
+                    genres.add(row[i]);
+                }
+            }
+        }
+
+        c1.close();
+
+        Movie randomMovie = new Movie(Integer.parseInt(id), title, Integer.parseInt(year), Double.parseDouble(rating), desc, url, genres);
         return randomMovie;
     }
 

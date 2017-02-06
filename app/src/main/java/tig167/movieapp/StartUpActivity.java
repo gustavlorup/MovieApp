@@ -17,11 +17,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.io.IOException;
 
-/**
- * Created by jnssonhugo on 2016-11-17.
- */
-
-
 public class StartUpActivity extends AppCompatActivity{
 
     private FirebaseAuth mAuth;
@@ -50,15 +45,20 @@ public class StartUpActivity extends AppCompatActivity{
             }
         };
 
+        /* Om användaren klickar på LogIn och man inte har loggat ut sen tidigare så loggas man in automatiskt utan
+           att behöva ange användarinfo igen.
+         */
         Button b1 = (Button) findViewById(R.id.openLogInButton);
         b1.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View view) {
                 if(user!=null){
+                    /* Om man aldrig loggade ut.. */
                     signInDirectly(view);
                 }
                 if(user==null){
+                    /* Du är utloggad, snälla logga in! */
                     promptSignIn(view);
                 }
             }

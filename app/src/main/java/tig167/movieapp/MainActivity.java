@@ -1,45 +1,26 @@
 package tig167.movieapp;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.database.SQLException;
-import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
 import java.io.IOException;
+
+/* Vår MainAktivitet. Det är här de slumpade filmerna visas och det är härifrån man navigerar sig */
 
 
 public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
@@ -47,13 +28,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 
     private String API_KEY = "AIzaSyAS-LOzdzRz1ni16kvTKrPU_60HQd_IYeo";
     public String url;
-    public String newUrl;
-    public static String movieTitle;
-    public static int year;
-    public static int movieId;
-    public static double rating;
-    public static String desc;
-
     YouTubePlayer YPlayer;
     private static final int RECOVERY_REQUEST = 1;
     private FirebaseAuth mAuth;
@@ -102,6 +76,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         });
         url = "R2GKVtWsXKY";
 
+        /* Skapar en instans av vår databashelper och använder den för att hämta en slumpvald film redan vid start av appen */
+
         myDbHelper = new DBHelper(this);
 
         try {
@@ -123,6 +99,15 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
             throw sqle;
 
         }
+
+
+        Movie a = myDbHelper.getRandomMovie();
+        url = a.getUrl();
+        titleView.setText(a.getTitle());
+        ratingView.setText(Double.toString(a.getRating()));
+        plotView.setText(a.getDesc());
+        yearView.setText(Integer.toString(a.getYear()));
+        genreView.setText(a.getGenres());
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
@@ -177,6 +162,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         startActivityForResult(askIntent, 1);
 }
 
+    /* Används i OnClick på XML. Skapar en helt ny random film, endast! */
     public void newRandomMovie(View v){
         Movie a = myDbHelper.getRandomMovie();
         url = a.getUrl();
@@ -184,9 +170,10 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         ratingView.setText(Double.toString(a.getRating()));
         plotView.setText(a.getDesc());
         yearView.setText(Integer.toString(a.getYear()));
-        genreView.setText("Inte än implementerat");
+        genreView.setText(a.getGenres());
     }
 
+    /* Loggar ut och tar dig till början av appen */
     public void signOut(){
         mAuth.signOut();
         Intent intent = new Intent(this, StartUpActivity.class);
@@ -194,6 +181,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         this.finish();
     }
 
+    /* En fråga om man verkligen vill logga ut */
     public void logOutQuestion() {
         final Dialog dialog = new Dialog(this);
         TextView title = new TextView(this);
@@ -218,6 +206,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         }).create().show();
 
     }
+
+    /* Hämtar data från FilterActivity, i detta fallet filmens alla Strängar */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
 
@@ -226,7 +216,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
             ratingView.setText(data.getStringExtra("rating"));
             plotView.setText(data.getStringExtra("plot"));
             yearView.setText(data.getStringExtra("year"));
-            System.out.println(data.getStringExtra("genre"));
             genreView.setText(data.getStringExtra("genre"));
         }
     }

@@ -41,9 +41,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import org.w3c.dom.Text;
 
-/**
- * Created by jnssonhugo on 2016-11-17.
- */
+
 
 public class RegisterActivity extends AppCompatActivity{
 
@@ -74,10 +72,10 @@ public class RegisterActivity extends AppCompatActivity{
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    // User is signed in
+                    // Användare inloggad
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                 } else {
-                    // User is signed out
+                    // Användare utloggad
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
                 // ...
