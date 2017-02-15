@@ -22,7 +22,6 @@ import java.util.List;
     private static final int DATABASE_VERSION = 1;
     private static final String TAG = "";
     /* Default systemväg för applikations databas */
-    //The Android's default system path of your application database.
     private static String DB_PATH = "/data/data/tig167.movieapp/databases/";
 
     private static String DB_NAME = "movies.db";
@@ -38,7 +37,7 @@ import java.util.List;
     }
 
     /**
-     * Skapar en tom database på systemet och gör om det till vår egna */
+     * Skapar en tom databas på systemet och gör om det till vår egna */
     public void createDataBase() throws IOException {
 
         boolean dbExist = checkDataBase();

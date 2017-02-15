@@ -130,7 +130,10 @@ public class LoginActivity extends AppCompatActivity  {
         return valid;
     }
 
-
+    public void forgotPassword(View v){
+        Intent newIntent = new Intent(this, PasswordResetActivity.class);
+        startActivity(newIntent);
+    }
 
     @Override
     public void onStart() {
@@ -151,5 +154,6 @@ public class LoginActivity extends AppCompatActivity  {
         startActivity(intent);
         finish();
     }
+
 
 }

@@ -28,7 +28,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 
     private String API_KEY = "AIzaSyAS-LOzdzRz1ni16kvTKrPU_60HQd_IYeo";
     public String url;
-    YouTubePlayer YPlayer;
     private static final int RECOVERY_REQUEST = 1;
     private FirebaseAuth mAuth;
     FirebaseUser user;
@@ -137,11 +136,16 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 
     } /* Slut på onCreate */
 
+    YouTubePlayer YPlayer;
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
-        this.YPlayer = player;
         if (!wasRestored) {
+            // För att kunna styra vår player
+            YPlayer = player;
             player.loadVideo(url);
+
+            // Vi vill inte att den ska spelas automatiskt, därav pause();
+            player.pause();
         }
         player.setPlayerStyle(YouTubePlayer.PlayerStyle.MINIMAL);
     }
@@ -158,7 +162,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     }
 
     public void openFilter(){
-        Intent askIntent = new Intent(MainActivity.this, FilterActivity.class);
+        Intent askIntent = new Intent(this, FilterActivity.class);
         startActivityForResult(askIntent, 1);
 }
 
@@ -171,6 +175,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         plotView.setText(a.getDesc());
         yearView.setText(Integer.toString(a.getYear()));
         genreView.setText(a.getGenres());
+        changeVideo(url);
     }
 
     /* Loggar ut och tar dig till början av appen */
@@ -209,7 +214,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 
     /* Hämtar data från FilterActivity, i detta fallet filmens alla Strängar */
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+    protected void onActivityResult(int requestCode, int resultCode, final Intent data){
 
         if(resultCode == RESULT_OK){
             titleView.setText(data.getStringExtra("title"));
@@ -217,11 +222,21 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
             plotView.setText(data.getStringExtra("plot"));
             yearView.setText(data.getStringExtra("year"));
             genreView.setText(data.getStringExtra("genre"));
+            url = data.getStringExtra("url");
+
         }
+
+        this.finish();
+        startActivity(getIntent());
+
     }
 
 
+    public void changeVideo(String s){
+        YPlayer.loadVideo(s);
+        YPlayer.pause();
     }
+}
 
 
 

@@ -29,24 +29,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".FilterActivity" android:exported="true" android:launchMode="singleInstance" />
+        <activity
+            android:name=".FilterActivity"
+            android:exported="true"
+            android:launchMode="singleInstance" />
 
         <!-- Aktivitet för login sida -->
         <activity
-            android:name=".LoginActivity"
-            android:label="@string/app_name" />
+            android:name=".LoginActivity"/>
 
         <!-- Register! -->
 
         <activity
-            android:name=".RegisterActivity"
-            android:label="@string/app_name" />
+            android:name=".RegisterActivity"/>
+
 
         <!-- Popupwindow -->
 
-        <activity android:name=".MainActivity"  />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".PasswordResetActivity">
 
+        </activity>
     </application>
 
 </manifest>

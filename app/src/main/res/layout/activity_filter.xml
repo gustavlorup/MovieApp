@@ -68,6 +68,7 @@
                 android:layout_height="match_parent"
                 android:background="#00000000"
                 android:src="@drawable/romancebutton" />
+
             <ImageButton
                 android:id="@+id/dramabutton"
                 android:layout_marginBottom="-2dp"
@@ -158,6 +159,7 @@
         android:id="@+id/ratingView"
         android:layout_weight="1" />
     </LinearLayout>
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -186,7 +188,8 @@
         android:orientation="vertical"
         android:layout_marginTop="330dp"
         android:layout_centerHorizontal="true"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout2">
 
     <TextView
         android:layout_gravity="center"
@@ -207,10 +210,24 @@
     </TextView>
 
     </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:textAllCaps="false"
+        android:text="Go!"
+        android:onClick="sendMovie"
+        android:id="@+id/applyFilterOnMovie"
+        android:layout_marginBottom="100dp"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content" />
+
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_marginTop="360dp"
-        android:layout_height="wrap_content">
+        android:layout_marginTop="30dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/linearLayout2"
+        android:layout_alignParentLeft="true">
         <Spinner
             android:id="@+id/year_from"
             android:layout_width="150dp"
@@ -228,15 +245,4 @@
             android:spinnerMode="dropdown"
             />
     </LinearLayout>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:textAllCaps="false"
-        android:text="Go!"
-        android:onClick="sendMovie"
-        android:id="@+id/applyFilterOnMovie"
-        android:layout_marginBottom="100dp"
-        android:layout_centerInParent="true"
-        android:layout_height="wrap_content" />
 </RelativeLayout>

@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 import static tig167.movieapp.R.id.ratingBar;
 
 public class FilterActivity extends AppCompatActivity implements View.OnTouchListener {
