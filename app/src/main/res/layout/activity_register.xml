@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- Aktivitet för att hantera nya medlemmar -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
@@ -16,10 +19,6 @@
         android:layout_height="140dp"
         app:srcCompat="@drawable/regicon"
         android:id="@+id/imageView" />
-
-
-
-
 
     <AutoCompleteTextView
         android:padding="10dp"

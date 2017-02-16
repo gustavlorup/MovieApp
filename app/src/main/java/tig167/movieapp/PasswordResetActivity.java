@@ -1,5 +1,7 @@
 package tig167.movieapp;
 
+//Syftet med denna är endast att kunna erbjuda byte av lösenord!!
+
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;

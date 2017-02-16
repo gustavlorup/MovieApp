@@ -38,8 +38,9 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     TextView genreView;
     TextView yearView;
     DBHelper myDbHelper;
+    public YouTubePlayer YPlayer;
+    public YouTubePlayerView youTubePlayerView;
 
-    YouTubePlayerView youTubePlayerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,10 +134,12 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 
         });
 
+        System.out.println(a.getTitle());
+
 
     } /* Slut på onCreate */
 
-    YouTubePlayer YPlayer;
+
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
         if (!wasRestored) {
@@ -215,7 +218,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     /* Hämtar data från FilterActivity, i detta fallet filmens alla Strängar */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, final Intent data){
-
         if(resultCode == RESULT_OK){
             titleView.setText(data.getStringExtra("title"));
             ratingView.setText(data.getStringExtra("rating"));
@@ -223,11 +225,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
             yearView.setText(data.getStringExtra("year"));
             genreView.setText(data.getStringExtra("genre"));
             url = data.getStringExtra("url");
-
+            changeVideo(url);
         }
-
-        this.finish();
-        startActivity(getIntent());
 
     }
 
@@ -235,6 +234,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     public void changeVideo(String s){
         YPlayer.loadVideo(s);
         YPlayer.pause();
+
     }
 }
 

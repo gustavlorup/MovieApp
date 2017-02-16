@@ -31,6 +31,8 @@ public class StartUpActivity extends AppCompatActivity{
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
+        // Vi vill se om användaren är inloggad för att automatisera inloggning om man aldrig
+        // loggade ut
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override

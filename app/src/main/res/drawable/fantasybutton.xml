@@ -4,15 +4,15 @@
         android:state_pressed="false"
         android:state_selected="false"
         android:state_focused="false"
-        android:drawable="@drawable/fantasyicondefault">
+        android:drawable="@drawable/fantasy256black">
     </item>
 
     <item
         android:state_selected="true"
-        android:drawable="@drawable/fantasyiconpressed">
+        android:drawable="@drawable/fantasy256blue">
     </item>
     <item android:state_pressed="true"
-        android:drawable="@drawable/fantasyiconpressed">
+        android:drawable="@drawable/fantasy256blue">
     </item>
 
 

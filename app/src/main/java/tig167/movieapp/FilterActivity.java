@@ -2,6 +2,7 @@ package tig167.movieapp;
 
 import android.content.Intent;
 import android.database.SQLException;
+import android.nfc.Tag;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -16,12 +17,15 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
+
 import static tig167.movieapp.R.id.ratingBar;
 
 public class FilterActivity extends AppCompatActivity implements View.OnTouchListener {
 
     ImageButton genres[] = new ImageButton[8]; // Genreknapperna
     TextView warningView;
+    TextView defaultGenreView;
     DBHelper myDbHelper;
     TextView ratingView;
     ArrayAdapter<CharSequence> adapter;
@@ -39,7 +43,7 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
         Button applyFilter = (Button) findViewById(R.id.applyFilterOnMovie);
 
         /* Deklarerar filterknappar */
-        genres[0] = (ImageButton) findViewById(R.id.criminalbutton);
+        genres[0] = (ImageButton) findViewById(R.id.actionbutton);
         genres[0].setTag("1");
         genres[1] = (ImageButton) findViewById(R.id.fantasybutton);
         genres[1].setTag("10");
@@ -60,6 +64,8 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
         final RatingBar bar = (RatingBar) findViewById(ratingBar);
          ratingView = (TextView) findViewById(R.id.ratingView);
         warningView = (TextView) findViewById(R.id.warningText);
+        defaultGenreView = (TextView)findViewById(R.id.defaultview);
+
         ratingView.setText(String.format("%2.1f", bar.getRating() * 2).replace(",", "."));
 
           /* Lägger på en OnTouchListener på knapparna */
@@ -84,6 +90,8 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
                 ratingView.setText((String.format("%2.1f", rating).replace(",", ".")));
             }
         });
+
+
 
 
         s1 = (Spinner) findViewById(R.id.year_from);
@@ -157,74 +165,89 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
     public boolean onTouch(View v, MotionEvent motionEvent) {
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
             switch (v.getId()) {
-                case R.id.criminalbutton:
+                case R.id.actionbutton:
                     if (validateGenre()) {
-                        v.setPressed(!v.isPressed());
+                        v.setSelected(!v.isSelected());
+                        updateGenres(genres[0].getTag());
                     }
                     if (!validateGenre()) {
-
-                        v.setPressed(!v.isPressed());
+                        v.setSelected(!v.isSelected());
+                        updateGenres(genres[0].getTag());
                     }
                     break;
                 case R.id.fantasybutton:
                     if (validateGenre()) {
-                        v.setPressed(!v.isPressed());
+                        v.setSelected(!v.isSelected());
+                        updateGenres(genres[1].getTag());
                     }
                     if (!validateGenre()) {
 
-                        v.setPressed(!v.isPressed());
+                        v.setSelected(!v.isSelected());
+                        updateGenres(genres[1].getTag());
                     }
                     break;
                 case R.id.romancebutton:
                     if (validateGenre()) {
-                        v.setPressed(!v.isPressed());
+                        v.setSelected(!v.isSelected());
+                        updateGenres(genres[2].getTag());
                     }
                     if (!validateGenre()) {
 
-                        v.setPressed(!v.isPressed());
+                        v.setSelected(!v.isSelected());
+                        updateGenres(genres[2].getTag());
                     }
                     break;
                 case R.id.dramabutton:
                     if (validateGenre()) {
-                        v.setPressed(!v.isPressed());
+                        v.setSelected(!v.isSelected());
+                        updateGenres(genres[3].getTag());
                     }
                     if (!validateGenre()) {
 
-                        v.setPressed(!v.isPressed());
+                        v.setSelected(!v.isSelected());
+                        updateGenres(genres[3].getTag());
                     }
                     break;
                 case R.id.adventurebutton:
                     if (validateGenre()) {
-                        v.setPressed(!v.isPressed());
+                        v.setSelected(!v.isSelected());
+                        updateGenres(genres[4].getTag());
                     }
                     if (!validateGenre()) {
 
-                        v.setPressed(!v.isPressed());
+                        v.setSelected(!v.isSelected());
+                        updateGenres(genres[4].getTag());
                     }
                     break;
                 case R.id.comedybutton:
                     if (validateGenre()) {
-                        v.setPressed(!v.isPressed());
+                        v.setSelected(!v.isSelected());
+                        updateGenres(genres[5].getTag());
                     }
                     if (!validateGenre()) {
 
-                        v.setPressed(!v.isPressed());
+                        v.setSelected(!v.isSelected());
+                        updateGenres(genres[5].getTag());
                     }
                     break;
                 case R.id.documentarybutton:
                     if (validateGenre()) {
-                        v.setPressed(!v.isPressed());
+                        v.setSelected(!v.isSelected());
+                        updateGenres(genres[6].getTag());
                     }
                     if (!validateGenre()) {
-                        v.setPressed(!v.isPressed());
+                        v.setSelected(!v.isSelected());
+                        updateGenres(genres[6].getTag());
                     }
                     break;
                 case R.id.westernbutton:
                     if (validateGenre()) {
-                        v.setPressed(!v.isPressed());
+                        v.setSelected(!v.isSelected());
+                        updateGenres(genres[7].getTag());
                     }
                     if (!validateGenre()) {
-                        v.setPressed(!v.isPressed());
+                        v.setSelected(!v.isSelected());
+                        updateGenres(genres[7].getTag());
                     }
                     break;
                 default:
@@ -240,7 +263,7 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
         int nr = 0;
 
         for (ImageButton genre1 : genres) {
-            if (genre1.isPressed()) {
+            if (genre1.isSelected()) {
                 nr++;
                 if (nr > 3) {
                     valid = false;
@@ -260,7 +283,7 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
      */
 
     public void sendMovie(View v) {
-        Intent movieIntent = new Intent(FilterActivity.this, MainActivity.class);
+        Intent movieIntent = new Intent();
         ArrayList<String> searchGenres = getGenres(v);
         if(searchGenres.size()==3){
             Movie a = myDbHelper.getFilteredMovie(searchGenres.get(0), searchGenres.get(1), searchGenres.get(2), ratingView.getText().toString(),
@@ -327,11 +350,85 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
     public ArrayList<String> getGenres(View v) {
         ArrayList<String> searchGenre = new ArrayList<>();
         for (ImageButton genre1 : genres) {
-            if (validateGenre() && genre1.isPressed()) {
+            if (validateGenre() && genre1.isSelected()) {
                 searchGenre.add(genre1.getTag().toString());
             }
         }
         return searchGenre;
+    }
+
+    public void updateGenres(Object b){
+        String total="";
+        String current = defaultGenreView.getText().toString();
+
+        if(b == "1" && !current.contains("Action")){
+            total = defaultGenreView.getText().toString() + "Action,";
+            defaultGenreView.setText(total);
+        }
+
+        if(b == "1" && current.contains("Action")){
+            current = current.replace("Action,", "");
+            defaultGenreView.setText(current);
+        }
+
+        if(b == "10" && !current.contains("Fantasy")){
+            total = defaultGenreView.getText().toString() + "Fantasy,";
+            defaultGenreView.setText(total);
+        }
+
+        if(b == "10" && current.contains("Fantasy")){
+            current = current.replace("Fantasy,", "");
+            defaultGenreView.setText(current);
+        }
+        if(b == "8" && !current.contains("Romance")){
+            total = defaultGenreView.getText().toString() + "Romance,";
+            defaultGenreView.setText(total);
+        }
+        if(b == "8" && current.contains("Romance")){
+            current = current.replace("Romance,", "");
+            defaultGenreView.setText(current);
+        }
+        if(b == "17" && !current.contains("Drama")){
+            total = defaultGenreView.getText().toString() + "Drama,";
+            defaultGenreView.setText(total);
+        }
+        if(b == "17" && current.contains("Drama")){
+            current = current.replace("Drama,", "");
+            defaultGenreView.setText(current);
+        }
+        if(b == "2" && !current.contains("Adventure")){
+            total = defaultGenreView.getText().toString() + "Adventure,";
+            defaultGenreView.setText(total);
+        }
+        if(b == "2" && current.contains("Adventure")){
+            current = current.replace("Adventure,", "");
+            defaultGenreView.setText(current);
+        }
+        if(b == "5" && !current.contains("Comedy")){
+            total = defaultGenreView.getText().toString() + "Comedy,";
+            defaultGenreView.setText(total);
+        }
+        if(b == "5" && current.contains("Comedy")){
+            current = current.replace("Comedy,", "");
+            defaultGenreView.setText(current);
+        }
+        if(b == "7" && !current.contains("Documentary")){
+            total = defaultGenreView.getText().toString() + "Documentary,";
+            defaultGenreView.setText(total);
+        }
+        if(b == "7" && current.contains("Documentary")){
+            current = current.replace("Documentary,", "");
+            defaultGenreView.setText(current);
+        }
+        if(b == "22" && !current.contains("Western")){
+            total = defaultGenreView.getText().toString() + "Western,";
+            defaultGenreView.setText(total);
+        }
+        if(b == "22" && current.contains("Western")){
+            current = current.replace("Western,", "");
+            defaultGenreView.setText(current);
+        }
+
     }
 }
 
