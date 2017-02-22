@@ -21,7 +21,7 @@
 
         <!-- Aktivitet för start sida -->
         <activity
-            android:name=".StartUpActivity"
+            android:name=".Gränssnitt.StartUpActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,24 +30,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FilterActivity"
+            android:name=".Gränssnitt.FilterActivity"
             android:exported="true"
             android:launchMode="singleInstance" />
 
         <!-- Aktivitet för login sida -->
         <activity
-            android:name=".LoginActivity"/>
+            android:name=".Gränssnitt.LoginActivity"/>
 
         <!-- Register! -->
 
         <activity
-            android:name=".RegisterActivity"/>
+            android:name=".Gränssnitt.RegisterActivity"/>
 
 
         <!-- Popupwindow -->
 
-        <activity android:name=".MainActivity" />
-        <activity android:name=".PasswordResetActivity">
+        <activity android:name=".Gränssnitt.MainActivity" />
+        <activity android:name=".Gränssnitt.PasswordResetActivity">
 
         </activity>
     </application>

@@ -9,7 +9,7 @@
     android:background="#ffffff"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="tig167.movieapp.FilterActivity">
+    tools:context="tig167.movieapp.Gränssnitt.FilterActivity">
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
