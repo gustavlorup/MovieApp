@@ -1,4 +1,4 @@
-package tig167.movieapp.Gränssnitt;
+package tig167.movieapp.granssnitt;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

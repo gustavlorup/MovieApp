@@ -1,4 +1,4 @@
-package tig167.movieapp.Gränssnitt;
+package tig167.movieapp.granssnitt;
 
 import android.content.Intent;
 import android.os.Bundle;

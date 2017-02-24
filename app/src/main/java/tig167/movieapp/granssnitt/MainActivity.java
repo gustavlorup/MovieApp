@@ -1,4 +1,4 @@
-package tig167.movieapp.Gränssnitt;
+package tig167.movieapp.granssnitt;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -20,8 +20,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import java.io.IOException;
 
-import tig167.movieapp.Logik.DBHelper;
-import tig167.movieapp.Logik.Movie;
+import tig167.movieapp.logik.DBHelper;
+import tig167.movieapp.logik.Movie;
 import tig167.movieapp.R;
 
 /* Vår MainAktivitet. Det är här de slumpade filmerna visas och det är härifrån man navigerar sig */

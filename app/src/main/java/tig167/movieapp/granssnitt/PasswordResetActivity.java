@@ -1,4 +1,4 @@
-package tig167.movieapp.Gränssnitt;
+package tig167.movieapp.granssnitt;
 
 //Syftet med denna är endast att kunna erbjuda byte av lösenord!!
 
@@ -38,7 +38,7 @@ public class PasswordResetActivity extends AppCompatActivity {
         resetButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if(validateForm()==true){
+                if(validateForm()){
                 auth.sendPasswordResetEmail(email.getText().toString())
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             public static final String TAG = "";
@@ -52,7 +52,7 @@ public class PasswordResetActivity extends AppCompatActivity {
                                 }
                             }
                         });
-            }
+                }
             }
         });
 

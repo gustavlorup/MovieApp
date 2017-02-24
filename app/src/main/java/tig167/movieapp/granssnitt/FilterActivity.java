@@ -1,14 +1,19 @@
-package tig167.movieapp.Gränssnitt;
+package tig167.movieapp.granssnitt;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.SQLException;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.Spinner;
@@ -17,14 +22,13 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import tig167.movieapp.Logik.DBHelper;
-import tig167.movieapp.Logik.Movie;
+import tig167.movieapp.logik.DBHelper;
+import tig167.movieapp.logik.Movie;
 import tig167.movieapp.R;
 
 import static tig167.movieapp.R.id.ratingBar;
 
 public class FilterActivity extends AppCompatActivity implements View.OnTouchListener {
-
     ImageButton genres[] = new ImageButton[8]; // Genreknapperna
     TextView warningView;
     TextView defaultGenreView;
@@ -40,9 +44,6 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
-
-
-        Button applyFilter = (Button) findViewById(R.id.applyFilterOnMovie);
 
         /* Deklarerar filterknappar */
         genres[0] = (ImageButton) findViewById(R.id.actionbutton);
@@ -64,7 +65,7 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
 
 
         final RatingBar bar = (RatingBar) findViewById(ratingBar);
-         ratingView = (TextView) findViewById(R.id.ratingView);
+        ratingView = (TextView) findViewById(R.id.ratingView);
         warningView = (TextView) findViewById(R.id.warningText);
         defaultGenreView = (TextView)findViewById(R.id.defaultview);
 
@@ -88,7 +89,6 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 rating = rating * 2;
-
                 ratingView.setText((String.format("%2.1f", rating).replace(",", ".")));
             }
         });
@@ -104,11 +104,10 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
 
         s1.setAdapter(adapter);
         s1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 
-
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
@@ -291,59 +290,85 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
             Movie a = myDbHelper.getFilteredMovie(searchGenres.get(0), searchGenres.get(1), searchGenres.get(2), ratingView.getText().toString(),
                     s1.getSelectedItem().toString(), s2.getSelectedItem().toString());
 
-            movieIntent.putExtra("url", a.getUrl());
-            movieIntent.putExtra("title", a.getTitle());
-            movieIntent.putExtra("rating", (String.valueOf(a.getRating())));
-            movieIntent.putExtra("plot", a.getDesc());
-            movieIntent.putExtra("year", (String.valueOf(a.getYear())));
-            movieIntent.putExtra("genre", a.getGenres());
-            setResult(RESULT_OK, movieIntent);
+            if(!DBHelper.foundMovie)
+            {
+                movieError();
+            }
+            if(DBHelper.foundMovie) {
+                movieIntent.putExtra("url", a.getUrl());
+                movieIntent.putExtra("title", a.getTitle());
+                movieIntent.putExtra("rating", (String.valueOf(a.getRating())));
+                movieIntent.putExtra("plot", a.getDesc());
+                movieIntent.putExtra("year", (String.valueOf(a.getYear())));
+                movieIntent.putExtra("genre", a.getGenres());
+                setResult(RESULT_OK, movieIntent);
 
-            finish();
+                finish();
+            }
         }
 
         else if(searchGenres.size()==2){
             Movie a = myDbHelper.getFilteredMovie(searchGenres.get(0), searchGenres.get(1), null, ratingView.getText().toString(),
                     s1.getSelectedItem().toString(), s2.getSelectedItem().toString());
 
-            movieIntent.putExtra("url", a.getUrl());
-            movieIntent.putExtra("title", a.getTitle());
-            movieIntent.putExtra("rating", (String.valueOf(a.getRating())));
-            movieIntent.putExtra("plot", a.getDesc());
-            movieIntent.putExtra("year", (String.valueOf(a.getYear())));
-            movieIntent.putExtra("genre", a.getGenres());
-            setResult(RESULT_OK, movieIntent);
 
-            finish();
+            if(!DBHelper.foundMovie)
+            {
+                movieError();
+            }
+            if(DBHelper.foundMovie) {
+                movieIntent.putExtra("url", a.getUrl());
+                movieIntent.putExtra("title", a.getTitle());
+                movieIntent.putExtra("rating", (String.valueOf(a.getRating())));
+                movieIntent.putExtra("plot", a.getDesc());
+                movieIntent.putExtra("year", (String.valueOf(a.getYear())));
+                movieIntent.putExtra("genre", a.getGenres());
+                setResult(RESULT_OK, movieIntent);
+
+                finish();
+            }
         }
 
         else if(searchGenres.size()==1){
-            Movie a = myDbHelper.getFilteredMovie(searchGenres.get(0), null, null, ratingView.getText().toString(),
-                    s1.getSelectedItem().toString(), s2.getSelectedItem().toString());
+                Movie a = myDbHelper.getFilteredMovie(searchGenres.get(0), null, null, ratingView.getText().toString(),
+                        s1.getSelectedItem().toString(), s2.getSelectedItem().toString());
 
-            movieIntent.putExtra("url", a.getUrl());
-            movieIntent.putExtra("title", a.getTitle());
-            movieIntent.putExtra("rating", (String.valueOf(a.getRating())));
-            movieIntent.putExtra("plot", a.getDesc());
-            movieIntent.putExtra("year", (String.valueOf(a.getYear())));
-            movieIntent.putExtra("genre", a.getGenres());
-            setResult(RESULT_OK, movieIntent);
+            if(!DBHelper.foundMovie)
+            {
+                movieError();
+            }
 
-            finish();
+            if(DBHelper.foundMovie){
+                movieIntent.putExtra("url", a.getUrl());
+                movieIntent.putExtra("title", a.getTitle());
+                movieIntent.putExtra("rating", (String.valueOf(a.getRating())));
+                movieIntent.putExtra("plot", a.getDesc());
+                movieIntent.putExtra("year", (String.valueOf(a.getYear())));
+                movieIntent.putExtra("genre", a.getGenres());
+                setResult(RESULT_OK, movieIntent);
+                finish();
+            }
+
         }
 
 
         else if(searchGenres.size()==0){
             Movie a = myDbHelper.getFilteredMovie(null, null, null, ratingView.getText().toString(),
                     s1.getSelectedItem().toString(), s2.getSelectedItem().toString());
-            movieIntent.putExtra("url", a.getUrl());
-            movieIntent.putExtra("title", a.getTitle());
-            movieIntent.putExtra("rating", (String.valueOf(a.getRating())));
-            movieIntent.putExtra("plot", a.getDesc());
-            movieIntent.putExtra("year", (String.valueOf(a.getYear())));
-            movieIntent.putExtra("genre", a.getGenres());
-            setResult(RESULT_OK, movieIntent);
-            finish();
+            if(!DBHelper.foundMovie)
+            {
+                movieError();
+            }
+            if(DBHelper.foundMovie) {
+                movieIntent.putExtra("url", a.getUrl());
+                movieIntent.putExtra("title", a.getTitle());
+                movieIntent.putExtra("rating", (String.valueOf(a.getRating())));
+                movieIntent.putExtra("plot", a.getDesc());
+                movieIntent.putExtra("year", (String.valueOf(a.getYear())));
+                movieIntent.putExtra("genre", a.getGenres());
+                setResult(RESULT_OK, movieIntent);
+                finish();
+            }
         }
 
     }
@@ -362,79 +387,97 @@ public class FilterActivity extends AppCompatActivity implements View.OnTouchLis
     /* Preliminär lista som visar användaren vilka kriterier man valt
      *
      */
-    public void updateGenres(Object b){
-        String total="";
+    public void updateGenres(Object b) {
+        String total = "";
         String current = defaultGenreView.getText().toString();
 
-        if(b == "1" && !current.contains("Action")){
+        if (b == "1" && !current.contains("Action")) {
             total = defaultGenreView.getText().toString() + "Action,";
             defaultGenreView.setText(total);
         }
 
-        if(b == "1" && current.contains("Action")){
+        if (b == "1" && current.contains("Action")) {
             current = current.replace("Action,", "");
             defaultGenreView.setText(current);
         }
 
-        if(b == "10" && !current.contains("Fantasy")){
+        if (b == "10" && !current.contains("Fantasy")) {
             total = defaultGenreView.getText().toString() + "Fantasy,";
             defaultGenreView.setText(total);
         }
 
-        if(b == "10" && current.contains("Fantasy")){
+        if (b == "10" && current.contains("Fantasy")) {
             current = current.replace("Fantasy,", "");
             defaultGenreView.setText(current);
         }
-        if(b == "8" && !current.contains("Romance")){
+        if (b == "8" && !current.contains("Romance")) {
             total = defaultGenreView.getText().toString() + "Romance,";
             defaultGenreView.setText(total);
         }
-        if(b == "8" && current.contains("Romance")){
+        if (b == "8" && current.contains("Romance")) {
             current = current.replace("Romance,", "");
             defaultGenreView.setText(current);
         }
-        if(b == "17" && !current.contains("Drama")){
+        if (b == "17" && !current.contains("Drama")) {
             total = defaultGenreView.getText().toString() + "Drama,";
             defaultGenreView.setText(total);
         }
-        if(b == "17" && current.contains("Drama")){
+        if (b == "17" && current.contains("Drama")) {
             current = current.replace("Drama,", "");
             defaultGenreView.setText(current);
         }
-        if(b == "2" && !current.contains("Adventure")){
+        if (b == "2" && !current.contains("Adventure")) {
             total = defaultGenreView.getText().toString() + "Adventure,";
             defaultGenreView.setText(total);
         }
-        if(b == "2" && current.contains("Adventure")){
+        if (b == "2" && current.contains("Adventure")) {
             current = current.replace("Adventure,", "");
             defaultGenreView.setText(current);
         }
-        if(b == "5" && !current.contains("Comedy")){
+        if (b == "5" && !current.contains("Comedy")) {
             total = defaultGenreView.getText().toString() + "Comedy,";
             defaultGenreView.setText(total);
         }
-        if(b == "5" && current.contains("Comedy")){
+        if (b == "5" && current.contains("Comedy")) {
             current = current.replace("Comedy,", "");
             defaultGenreView.setText(current);
         }
-        if(b == "7" && !current.contains("Documentary")){
+        if (b == "7" && !current.contains("Documentary")) {
             total = defaultGenreView.getText().toString() + "Documentary,";
             defaultGenreView.setText(total);
         }
-        if(b == "7" && current.contains("Documentary")){
+        if (b == "7" && current.contains("Documentary")) {
             current = current.replace("Documentary,", "");
             defaultGenreView.setText(current);
         }
-        if(b == "22" && !current.contains("Western")){
+        if (b == "22" && !current.contains("Western")) {
             total = defaultGenreView.getText().toString() + "Western,";
             defaultGenreView.setText(total);
         }
-        if(b == "22" && current.contains("Western")){
+        if (b == "22" && current.contains("Western")) {
             current = current.replace("Western,", "");
             defaultGenreView.setText(current);
         }
-
     }
+
+    public void movieError() {
+        final Dialog dialog = new Dialog(this);
+        TextView title = new TextView(this);
+        title.setGravity(Gravity.CENTER);
+        title.setAllCaps(true);
+        title.setText("Whops!");
+        AlertDialog.Builder myBuilder = new AlertDialog.Builder(this);
+        myBuilder.setCustomTitle(title);
+        myBuilder.setMessage("We did not find a movie according to your specifications.");
+        myBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialog.dismiss();
+            }
+        }).create().show();
+    }
+
+
 }
 
 
