@@ -1,7 +1,8 @@
-package tig167.movieapp.Logik;
+package tig167.movieapp.logik;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -13,17 +14,21 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
+import tig167.movieapp.granssnitt.FilterActivity;
+import tig167.movieapp.granssnitt.StartUpActivity;
+
+import static android.support.v4.content.ContextCompat.startActivity;
+
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
     private static final String TAG = "";
     /* Default systemväg för applikations databas */
     private static String DB_PATH = "/data/data/tig167.movieapp/databases/";
-
     private static String DB_NAME = "movies.db";
 
     private SQLiteDatabase myDataBase;
-
+    public static boolean foundMovie;
     private final Context myContext;
 
     public DBHelper(Context context) {
@@ -33,7 +38,8 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Skapar en tom databas på systemet och gör om det till vår egna */
+     * Skapar en tom databas på systemet och gör om det till vår egna
+     */
     public void createDataBase() throws IOException {
 
         boolean dbExist = checkDataBase();
@@ -67,8 +73,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Kollar om databasen redan finns så vi inte kopierar databasen varje start av app
-     *
-     *
      */
     private boolean checkDataBase() {
 
@@ -95,8 +99,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Kopierar databasen från asset till den tomma, nyskapade databsen i systemmappen.
-     *
-     *
      */
     private void copyDataBase() throws IOException {
 
@@ -160,15 +162,15 @@ public class DBHelper extends SQLiteOpenHelper {
         String query2 = "SELECT genre.moviegenre FROM movies " +
                 "INNER JOIN (genre INNER JOIN movies_genre ON genre.[_id] = movies_genre.idgenre) ON movies.[_id] = movies_genre.idmovies " +
                 "WHERE movies._id =" + id + ";";
-        Cursor c1 = myDataBase.rawQuery(query2,null);
+        Cursor c1 = myDataBase.rawQuery(query2, null);
 
         ArrayList<String> genres = new ArrayList<>();
 
         String row[] = new String[c1.getCount()];
-        while(c1.moveToNext()){
-            for(int i = 0; i < c1.getCount(); i++){
+        while (c1.moveToNext()) {
+            for (int i = 0; i < c1.getCount(); i++) {
                 row[i] = c1.getString(0);
-                if(!genres.contains(row[i])) {
+                if (!genres.contains(row[i])) {
                     genres.add(row[i]);
                 }
             }
@@ -187,48 +189,54 @@ public class DBHelper extends SQLiteOpenHelper {
         String query2 = "";
         Cursor c;
         Cursor c1;
-
-        if (genre1!=null && genre2!=null && genre3==null) {
+        String id = "";
+        String rating = "";
+        String title = "";
+        String year = "";
+        String desc = "";
+        String url = "";
+        ArrayList<String> genres;
+        if (genre1 != null && genre2 != null && genre3 == null) {
             query = "SELECT movies.*\n" +
                     "FROM movies INNER JOIN (genre INNER JOIN movies_genre ON genre.[_id] = movies_genre.idgenre) ON movies.[_id] = movies_genre.idmovies\n" +
                     "WHERE ((((movies_genre.idgenre)=" + genre1 + ") OR ((movies_genre.idgenre) = " + genre2 + ")) AND (movies.movieRating)>=" + Rating + ")" +
                     " AND ((movies.year) BETWEEN " + year_from + " AND " + year_to + ")\n" +
                     "ORDER BY RANDOM()\n" +
                     "LIMIT 1;";
-            c = myDataBase.rawQuery(query, null);
-            c.moveToFirst();
-            String id = c.getString(c.getColumnIndex("_id"));
-            String title = c.getString(c.getColumnIndex("title"));
-            String year = c.getString(c.getColumnIndex("year"));
-            String rating = c.getString(c.getColumnIndex("movieRating"));
-            String desc = c.getString(c.getColumnIndex("movieDesc"));
-            String url = c.getString(c.getColumnIndex("movieURL"));
-            c.close();
-
+            try {
+                c = myDataBase.rawQuery(query, null);
+                c.moveToFirst();
+                id = c.getString(c.getColumnIndex("_id"));
+                title = c.getString(c.getColumnIndex("title"));
+                year = c.getString(c.getColumnIndex("year"));
+                rating = c.getString(c.getColumnIndex("movieRating"));
+                desc = c.getString(c.getColumnIndex("movieDesc"));
+                url = c.getString(c.getColumnIndex("movieURL"));
+                c.close();
+                didNotFindMovie(true);
+            } catch (CursorIndexOutOfBoundsException ex) {
+                didNotFindMovie(false);
+            }
             query2 = "SELECT genre.moviegenre FROM movies " +
                     "INNER JOIN (genre INNER JOIN movies_genre ON genre.[_id] = movies_genre.idgenre) ON movies.[_id] = movies_genre.idmovies " +
                     "WHERE movies._id =" + id + ";";
-            c1 = myDataBase.rawQuery(query2, null);
-
-            ArrayList<String> genres = new ArrayList<>();
-
-            String row[] = new String[c1.getCount()];
-            while (c1.moveToNext()) {
-                for (int i = 0; i < c1.getCount(); i++) {
-                    row[i] = c1.getString(0);
-                    if (!genres.contains(row[i])) {
-                        genres.add(row[i]);
+            genres = new ArrayList<>();
+            if (foundMovie) {
+                c1 = myDataBase.rawQuery(query2, null);
+                    String row[] = new String[c1.getCount()];
+                    while (c1.moveToNext()) {
+                        for (int i = 0; i < c1.getCount(); i++) {
+                            row[i] = c1.getString(0);
+                            if (!genres.contains(row[i])) {
+                                genres.add(row[i]);
+                            }
                     }
                 }
+                c1.close();
+                didNotFindMovie(true);
+                FilteredMovie = new Movie(Integer.parseInt(id), title, Integer.parseInt(year), Double.parseDouble(rating), desc, url, (ArrayList<String>) genres);
             }
-
-
-            c1.close();
-            FilteredMovie = new Movie(Integer.parseInt(id), title, Integer.parseInt(year), Double.parseDouble(rating), desc, url, (ArrayList<String>) genres);
-        }
-
-
-        else if(genre1!=null && genre2==null && genre3==null) {
+        } else if (genre1 != null && genre2 == null && genre3 == null) {
 
             query = "SELECT movies.*\n" +
                     "FROM movies INNER JOIN (genre INNER JOIN movies_genre ON genre.[_id] = movies_genre.idgenre) ON movies.[_id] = movies_genre.idmovies\n" +
@@ -236,84 +244,85 @@ public class DBHelper extends SQLiteOpenHelper {
                     " AND ((movies.year) BETWEEN " + year_from + " AND " + year_to + "))\n" +
                     "ORDER BY RANDOM()\n" +
                     "LIMIT 1;";
-            c = myDataBase.rawQuery(query, null);
-            c.moveToFirst();
-            String id = c.getString(c.getColumnIndex("_id"));
-            String title = c.getString(c.getColumnIndex("title"));
-            String year = c.getString(c.getColumnIndex("year"));
-            String rating = c.getString(c.getColumnIndex("movieRating"));
-            String desc = c.getString(c.getColumnIndex("movieDesc"));
-            String url = c.getString(c.getColumnIndex("movieURL"));
-            c.close();
-
-
+            try {
+                c = myDataBase.rawQuery(query, null);
+                c.moveToFirst();
+                id = c.getString(c.getColumnIndex("_id"));
+                title = c.getString(c.getColumnIndex("title"));
+                year = c.getString(c.getColumnIndex("year"));
+                rating = c.getString(c.getColumnIndex("movieRating"));
+                desc = c.getString(c.getColumnIndex("movieDesc"));
+                url = c.getString(c.getColumnIndex("movieURL"));
+                c.close();
+                didNotFindMovie(true);
+            } catch (CursorIndexOutOfBoundsException ex) {
+                System.out.println("catch 1!");
+                didNotFindMovie(false);
+            }
             query2 = "SELECT genre.moviegenre FROM movies " +
                     "INNER JOIN (genre INNER JOIN movies_genre ON genre.[_id] = movies_genre.idgenre) ON movies.[_id] = movies_genre.idmovies " +
                     "WHERE movies._id =" + id + ";";
-            c1 = myDataBase.rawQuery(query2, null);
-
-
-            ArrayList<String> genres = new ArrayList<>();
-
-            String row[] = new String[c1.getCount()];
-            while(c1.moveToNext()){
-                for(int i = 0; i < c1.getCount(); i++){
-                    row[i] = c1.getString(0);
-                    if(!genres.contains(row[i])) {
-                        genres.add(row[i]);
+            genres = new ArrayList<>();
+            if (foundMovie) {
+                c1 = myDataBase.rawQuery(query2, null);
+                String row[] = new String[c1.getCount()];
+                while (c1.moveToNext()) {
+                    for (int i = 0; i < c1.getCount(); i++) {
+                        row[i] = c1.getString(0);
+                        if (!genres.contains(row[i])) {
+                            genres.add(row[i]);
+                        }
                     }
                 }
+                c1.close();
+                FilteredMovie = new Movie(Integer.parseInt(id), title, Integer.parseInt(year), Double.parseDouble(rating), desc, url, (ArrayList<String>) genres);
             }
-
-            c1.close();
-
-            FilteredMovie = new Movie(Integer.parseInt(id), title, Integer.parseInt(year), Double.parseDouble(rating), desc, url, (ArrayList<String>) genres);
-
-
-        }
-
-        else if (genre1==null && genre2==null && genre3==null) {
+        } else if (genre1 == null && genre2 == null && genre3 == null) {
             query = "SELECT movies.*\n" +
                     "FROM movies INNER JOIN (genre INNER JOIN movies_genre ON genre.[_id] = movies_genre.idgenre) ON movies.[_id] = movies_genre.idmovies\n" +
                     "WHERE ((movies.movieRating)>=" + Rating + ")" +
                     " AND ((movies.year) BETWEEN " + year_from + " AND " + year_to + ")\n" +
                     "ORDER BY RANDOM()\n" +
                     "LIMIT 1;";
-            c = myDataBase.rawQuery(query, null);
-            c.moveToFirst();
-            String id = c.getString(c.getColumnIndex("_id"));
-            String title = c.getString(c.getColumnIndex("title"));
-            String year = c.getString(c.getColumnIndex("year"));
-            String rating = c.getString(c.getColumnIndex("movieRating"));
-            String desc = c.getString(c.getColumnIndex("movieDesc"));
-            String url = c.getString(c.getColumnIndex("movieURL"));
-            c.close();
-
-
-            query2 = "SELECT genre.moviegenre FROM movies " +
-                    "INNER JOIN (genre INNER JOIN movies_genre ON genre.[_id] = movies_genre.idgenre) ON movies.[_id] = movies_genre.idmovies " +
-                    "WHERE movies._id =" + id + ";";
-            c1 = myDataBase.rawQuery(query2, null);
-            ArrayList<String> genres = new ArrayList<>();
-            String row[] = new String[c1.getCount()];
-            while(c1.moveToNext()){
-                for(int i = 0; i < c1.getCount(); i++){
-                    row[i] = c1.getString(0);
-                    if(!genres.contains(row[i])) {
-                        genres.add(row[i]);
-                    }
-                }
+            try {
+                c = myDataBase.rawQuery(query, null);
+                c.moveToFirst();
+                id = c.getString(c.getColumnIndex("_id"));
+                title = c.getString(c.getColumnIndex("title"));
+                year = c.getString(c.getColumnIndex("year"));
+                rating = c.getString(c.getColumnIndex("movieRating"));
+                desc = c.getString(c.getColumnIndex("movieDesc"));
+                url = c.getString(c.getColumnIndex("movieURL"));
+                c.close();
+                didNotFindMovie(true);
+            } catch (CursorIndexOutOfBoundsException ex) {
+                didNotFindMovie(false);
             }
 
+
+        query2 = "SELECT genre.moviegenre FROM movies " +
+                "INNER JOIN (genre INNER JOIN movies_genre ON genre.[_id] = movies_genre.idgenre) ON movies.[_id] = movies_genre.idmovies " +
+                "WHERE movies._id =" + id + ";";
+
+        genres = new ArrayList<>();
+        if (foundMovie) {
+            c1 = myDataBase.rawQuery(query2, null);
+                String row[] = new String[c1.getCount()];
+                while (c1.moveToNext()) {
+                    for (int i = 0; i < c1.getCount(); i++) {
+                        row[i] = c1.getString(0);
+                        if (!genres.contains(row[i])) {
+                            genres.add(row[i]);
+                        }
+                }
+            }
             c1.close();
-
+            didNotFindMovie(true);
             FilteredMovie = new Movie(Integer.parseInt(id), title, Integer.parseInt(year), Double.parseDouble(rating), desc, url, genres);
-
-
+        }
     }
 
-
-        else if(genre1!=null && genre2!=null && genre3!=null){
+        else if (genre1 != null && genre2 != null && genre3 != null) {
 
             query = "SELECT movies.*\n" +
                     "FROM movies INNER JOIN (genre INNER JOIN movies_genre ON genre.[_id] = movies_genre.idgenre) ON movies.[_id] = movies_genre.idmovies\n" +
@@ -321,39 +330,48 @@ public class DBHelper extends SQLiteOpenHelper {
                     " AND ((movies.year) BETWEEN " + year_from + " AND " + year_to + ")\n" +
                     "ORDER BY RANDOM()\n" +
                     "LIMIT 1;";
-            c = myDataBase.rawQuery(query, null);
-            c.moveToFirst();
-            String id = c.getString(c.getColumnIndex("_id"));
-            String title = c.getString(c.getColumnIndex("title"));
-            String year = c.getString(c.getColumnIndex("year"));
-            String rating = c.getString(c.getColumnIndex("movieRating"));
-            String desc = c.getString(c.getColumnIndex("movieDesc"));
-            String url = c.getString(c.getColumnIndex("movieURL"));
-            c.close();
-
+            try {
+                c = myDataBase.rawQuery(query, null);
+                c.moveToFirst();
+                id = c.getString(c.getColumnIndex("_id"));
+                title = c.getString(c.getColumnIndex("title"));
+                year = c.getString(c.getColumnIndex("year"));
+                rating = c.getString(c.getColumnIndex("movieRating"));
+                desc = c.getString(c.getColumnIndex("movieDesc"));
+                url = c.getString(c.getColumnIndex("movieURL"));
+                c.close();
+                didNotFindMovie(true);
+            } catch (CursorIndexOutOfBoundsException sqle) {
+                didNotFindMovie(false);
+            }
 
             query2 = "SELECT genre.moviegenre FROM movies " +
                     "INNER JOIN (genre INNER JOIN movies_genre ON genre.[_id] = movies_genre.idgenre) ON movies.[_id] = movies_genre.idmovies " +
                     "WHERE movies._id =" + id + ";";
-            c1 = myDataBase.rawQuery(query2, null);
+            genres = new ArrayList<>();
 
-
-            ArrayList<String> genres = new ArrayList<>();
-
-            String row[] = new String[c1.getCount()];
-            while (c1.moveToNext()) {
-                for (int i = 0; i < c1.getCount(); i++) {
-                    row[i] = c1.getString(0);
-                    if (!genres.contains(row[i])) {
-                        genres.add(row[i]);
+            if (foundMovie) {
+                c1 = myDataBase.rawQuery(query2, null);
+                String row[] = new String[c1.getCount()];
+                while (c1.moveToNext()) {
+                    for (int i = 0; i < c1.getCount(); i++) {
+                        row[i] = c1.getString(0);
+                        if (!genres.contains(row[i])) {
+                            genres.add(row[i]);
+                        }
                     }
                 }
+                c1.close();
+                didNotFindMovie(true);
+                FilteredMovie = new Movie(Integer.parseInt(id), title, Integer.parseInt(year), Double.parseDouble(rating), desc, url, (ArrayList<String>) genres);
             }
-            c1.close();
-            FilteredMovie = new Movie(Integer.parseInt(id), title, Integer.parseInt(year), Double.parseDouble(rating), desc, url, (ArrayList<String>) genres);
         }
-            return FilteredMovie;
-        }
+        return FilteredMovie;
+    }
+
+
+
+
 
 
 
@@ -371,5 +389,17 @@ public class DBHelper extends SQLiteOpenHelper {
             myContext.deleteDatabase(DB_NAME);
         }
     }
+
+    public boolean didNotFindMovie(Boolean a)
+    {
+        if(!a){
+            foundMovie = false;
+        }
+        else{
+            foundMovie = true;
+        }
+        return foundMovie;
+    }
+
 }
 

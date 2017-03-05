@@ -1,4 +1,4 @@
-package tig167.movieapp.Logik;
+package tig167.movieapp.logik;
 
 import java.util.ArrayList;
 
@@ -10,10 +10,6 @@ public class Movie {
     private double rating;
     private String desc;
     private String url;
-    private String genre1;
-    private String genre2;
-    private String genre3;
-    private String[] arraywithgenres;
     private ArrayList<String> arraylistwithgenres;
 
     public Movie(){
@@ -41,18 +37,6 @@ public class Movie {
 
     public int getYear(){
         return this.year;
-    }
-
-    public String getGenre1(){
-        return this.genre1;
-    }
-
-    public String getGenre2(){
-        return this.genre2;
-    }
-
-    public String getGenre3(){
-        return this.genre3;
     }
 
     public double getRating(){
